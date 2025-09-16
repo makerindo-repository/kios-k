@@ -1,0 +1,34 @@
+{
+    "timestamp": "2025-09-02T16:54:11",
+    "type": "sensor",
+    "header": "SUB",
+    "id": "001",
+    "gps": {
+        "lat": -8.01462569,
+        "lon": 112.9453024,
+        "alt": 668.89,
+        "sog": 1,
+        "cog": 150
+    },
+    "imu": {
+        "accelX": 0.028564,
+        "accelY": -0.027832,
+        "accelZ": 0.987793,
+        "gyroX": -4.061069,
+        "gyroY": 1.076336,
+        "gyroZ": 0.526718
+    },
+    "ultrasonic": {
+        "dist1": 32.9,
+        "dist2": 32.8
+    },
+    "bme": {
+        "temp": 32.1,
+        "humid": 67.94336,
+        "pressure": 931.5505
+    },
+    "power": {
+        "volt": 24.5,
+        "curr": 0.5
+    }
+}
