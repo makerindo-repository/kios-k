@@ -1,5 +1,5 @@
 const pages = document.querySelectorAll(".page");
-const INTERVAL = 7_000; // 30 seconds
+const INTERVAL = 5_000; // 30 seconds
 let index = 0;
 
 setInterval(() => {
