@@ -1,0 +1,131 @@
+/*Frame*/
+.frame {
+  width: 765px;
+  height: 1200px;
+  position: relative;
+  overflow: hidden;
+}
+
+/*Background*/
+.bg {
+  position: absolute;
+  inset: -50px;
+  background-image: url("assets/bg.png");
+  opacity: 0.5;
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  animation: bg-scroll 15s linear infinite;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+@keyframes bg-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: -400px 0; }
+}
+
+/*Content manager*/
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;     
+}
+.page {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.page.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/*Logo*/
+.logo {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 10;
+}
+.logo img {
+  width: 250px;
+  height: auto;
+}
+
+/*Slogan*/
+.slogan {
+  font-family: Inter, sans-serif;
+  position: absolute;
+  bottom: 80px;
+  left: 180px;
+  width: 100%;
+  text-align: center;
+  color: #10507c;
+  font-size: 1.5rem;
+}
+
+/*Bottom Blue Bar*/
+.bottom-blue {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background: #10507c;
+}
+
+/*Moving square and circle*/
+/*square*/
+.square {
+  opacity: 1;
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  background-color: #10507c;
+  border-radius: 10px;
+  top: 0px;
+  right: -150px;
+  animation: move 5s ease-in-out infinite alternate
+}
+.circle {
+  opacity: 1;
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  background-color: #10517c9c;
+  border-radius: 50%;
+  bottom: 0px;
+  left: -100px;
+  animation: move 5s ease-in-out infinite alternate
+}
+.ghost {
+  opacity: 0.2;
+  width: 390px;
+  height: 230px;
+}
+
+@keyframes move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-50px, -50px)
+  }
+}
