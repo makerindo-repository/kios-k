@@ -12,6 +12,7 @@ setInterval(() => {
 //for date and clock
 const timeEl = document.getElementById("time");
 const dateEl = document.getElementById("date");
+const message = document.getElementById("message");
 
 const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 const months = [
@@ -34,6 +35,34 @@ function updateClock() {
   const monthName = months[now.getMonth()];
   const year = now.getFullYear();
   dateEl.textContent = `${dayName}, ${date} ${monthName} ${year}`;
+
+  if (hours >= "6" && hours < "12") {
+    message.textContent = "Selamat Pagi!"
+    if (hours === "8" && minutes === "0") {
+      message.textContent = "Selamat Bekerja!"
+    }
+  }
+  else if (hours >= "12" && hours < "15") {
+    if (hours === "12" && minutes === "0") {
+      message.textContent = "Selamat Makan Siang, Semuanya!"
+    }
+    message.textContent = "Selamat Siang!"
+  }
+  else if (hours >= "15" && hours < "18") {
+    message.textContent = "Selamat Sore!"
+    if (hours === "17" && minutes === "0") {
+      if (dayName === "Jumat") {
+        message.textContent = "Sampai Jumpa Senin Nanti!"
+      }
+      else {
+        message.textContent = "Sampai Jumpa Esok!"
+      }
+    }
+  }
+  else {
+    message.textContent = "Selamat Malam!"
+  }
+  message.style.backgroundColor = "#10507c"
 }
 
 updateClock();

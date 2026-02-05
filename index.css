@@ -7,7 +7,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 770px;
-  height: 1024px;
+  height: 1100px;
   overflow: hidden;
 }
 
@@ -52,11 +52,6 @@ html, body {
   align-items: center;
   padding-top: 60px;
 }
-.header p {
-  font-size: 15px;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #1f86c9;
-}
 
 .logo {
   position: absolute;
@@ -82,6 +77,16 @@ html, body {
 .clock-container p {
   font-size: 25px;
   font-weight: bolder;
+}
+
+#message {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bolder;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  color: white;
 }
 
 /*Content manager*/
@@ -138,6 +143,11 @@ html, body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 40px;
   color: #10507c;
+}
+.page p {
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f86c9;
 }
 .page img {
   max-width: 100%;
