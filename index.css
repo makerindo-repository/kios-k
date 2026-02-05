@@ -4,24 +4,23 @@
 }
 
 /*Frame*/
-.frame {
-  width: 100vw;
-  aspect-ratio: 16/9;
+/* .frame {
+  width: 770px;
+  height: 1024px;
   position: relative;
   overflow: hidden;
-  margin: 0 auto
-}
+} */
 
 /*Background*/
 .bg {
-  width: 100%;
-  height: 100%;
+  width: 800px;
+  height: 950px;
   position: absolute;
   inset: -50px;
   background-image: url("assets/elements/bg.webp");
   opacity: 0.5;
   background-repeat: repeat;
-  background-size: 30% 30%;
+  background-size: 400px 400px;
   animation: bg-scroll 15s linear infinite;
   mask-image: linear-gradient(
     to right,
@@ -33,7 +32,7 @@
 }
 @keyframes bg-scroll {
   from { background-position: 0 0; }
-  to   { background-position: -20% 0; }
+  to   { background-position: -400px 0; }
 }
 
 /*Header*/
@@ -180,29 +179,29 @@
 .square {
   opacity: 1;
   position: absolute;
-  width: 40%;
-  height: 40%;
+  width: 300px;
+  height: 100px;
   background-color: #10507c;
   border-radius: 10px;
-  top: -12%;
-  right: -12%;
+  top: 0px;
+  right: -150px;
   animation: move 5s ease-in-out infinite alternate
 }
 .circle {
   opacity: 1;
   position: absolute;
-  width: 40%;
-  height: 40%;
+  width: 300px;
+  height: 120px;
   background-color: #10517c;
   border-radius: 50%;
-  bottom: -18%;
-  left: -18%;
+  bottom: 0px;
+  left: -100px;
   animation: move 5s ease-in-out infinite alternate
 }
 .ghost {
   opacity: 0.2;
-  width: 45%;
-  height: 45%;
+  width: 350px;
+  height: 140px;
 }
 
 @keyframes move {
