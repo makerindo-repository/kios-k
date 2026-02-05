@@ -4,17 +4,17 @@
 }
 
 /*Frame*/
-/* .frame {
+.frame {
   width: 770px;
   height: 1024px;
   position: relative;
   overflow: hidden;
-} */
+}
 
 /*Background*/
 .bg {
   width: 800px;
-  height: 950px;
+  height: 1100px;
   position: absolute;
   inset: -50px;
   background-image: url("assets/elements/bg.webp");
