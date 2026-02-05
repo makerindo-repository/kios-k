@@ -3,8 +3,16 @@
   padding: 0;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 770px;
+  height: 1024px;
+  overflow: hidden;
+}
+
 /*Frame*/
-.frame {
+.frame{
   width: 770px;
   height: 1024px;
   position: relative;
@@ -16,7 +24,7 @@
   width: 800px;
   height: 1100px;
   position: absolute;
-  inset: -50px;
+  inset: 0;
   background-image: url("assets/elements/bg.webp");
   opacity: 0.5;
   background-repeat: repeat;
