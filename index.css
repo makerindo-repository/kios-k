@@ -5,8 +5,8 @@
 
 /*Frame*/
 .frame {
-  width: 750px;
-  height: 950px;
+  width: 800px;
+  height: 1150px;
   position: relative;
   overflow: hidden;
 }
@@ -14,7 +14,7 @@
 /*Background*/
 .bg {
   width: 800px;
-  height: 950px;
+  height: 1150px;
   position: absolute;
   inset: -50px;
   background-image: url("assets/elements/bg.webp");
