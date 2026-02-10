@@ -114,7 +114,7 @@ html, body {
   align-items: center;
   flex-direction: row;
 }
-.content-template img {
+.content-template > img {
   width: 400px;
   border-radius: 10px;
 }
@@ -133,7 +133,7 @@ html, body {
   position: absolute;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1.2s ease;
+  transition: opacity 1.5s ease;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,12 +145,17 @@ html, body {
   font-size: 40px;
   color: #10507c;
 }
+.page h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  color: #10507c
+}
 .page p {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
   color: #1f86c9;
 }
-.page img {
+.page > img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
@@ -161,9 +166,26 @@ html, body {
   pointer-events: auto;
 }
 
+/*Activity page*/
+.activity-slider {
+  width: 400px;
+  height: 260px;
+  overflow: hidden;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.activity-slider img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
 /*Description box*/
 .description {
   width: 90%;
+  max-width: 700px;
   border-radius: 10px;
   padding: 15px;
   background-color: #1f86c9;
@@ -193,6 +215,83 @@ html, body {
   height: 100px;
   background: #10507c;
 }
+
+/* --- MOU CONTAINER --- */
+.mou {
+  position: absolute;
+  bottom: 200px;
+  width: 100%;
+  text-align: center;
+}
+
+.mou h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  color: #10507c;
+  margin-bottom: 10px;
+}
+
+/* --- VIEWPORT (CRITICAL) --- */
+.mou-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* --- MOVER --- */
+.mou-mover {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 25s linear infinite;
+}
+
+/* --- ONE FULL SET --- */
+.mou-set {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  flex-shrink: 0;
+}
+
+/* --- SINGLE ROW LOGOS --- */
+.mou-track.single {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.mou-track.single img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+/* --- GRID LOGOS --- */
+.mou-track.grid {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  grid-template-rows: repeat(2, auto);
+  gap: 12px 30px;
+  padding-right: 60px;
+}
+
+.grid-logo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+/* --- ANIMATION --- */
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 
 /*Moving square and circle*/
 .square {
