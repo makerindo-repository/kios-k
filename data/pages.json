@@ -1,0 +1,36 @@
+[
+  {
+    "id": "07dc0f84-e06c-4541-a0c5-df2da97be497",
+    "heading": "Produk Kami",
+    "title": "TetoBot v4.1",
+    "desc": "Ini adalah robot berbentuk Kasane Teto yang entah kenapa selalu coconut lari (kelaparan xixixi). Tetep sih, my bini :P",
+    "page_type": "single",
+    "photo_many": [],
+    "photo_one": "1237bad7aa0ffe0d595f9aee96a064cb"
+  },
+  {
+    "id": "cb4f7e8c-85be-4edc-bbfa-f716cb623ccb",
+    "heading": "Produk Kami",
+    "title": "Alat Goon Otomatis 6700",
+    "desc": "Alat ini bisa membuat anda GOON dengan kecepatan 67 goon per hari!",
+    "page_type": "single",
+    "photo_many": [
+      "f0e0be349c488db22a02fbc97e007c00",
+      "bec04a411e517c99529240a2e30fe2bd",
+      "39179a20d564c0577732a5727c8cf58a",
+      "e52789a9c47bdea74aef69f51bac5491"
+    ],
+    "photo_one": "1a4a6725fc0b6abe2cf4b86c74342138"
+  },
+  {
+    "id": "f60813aa-6d05-4417-a4bd-8b2f5f9a275b",
+    "heading": "Aktivitas Kami",
+    "title": "Menonton Dunmeshi Bersama",
+    "desc": "Kita sekantor nonton dungeon meshi jirrrr  hsand  dowah hwuoh hohoidwa hidwoahduowa huofhauihdawi",
+    "page_type": "multi",
+    "photo_many": [
+      "c1bbcea7b8fb7d8df89adcee14450f63",
+      "42fedbf7d44a9f81e703f6b2ea36a213"
+    ]
+  }
+]

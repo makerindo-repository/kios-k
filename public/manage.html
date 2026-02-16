@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manage Content</title>
+        <link rel="stylesheet" href="manage.css">
+    </head>
+    <body>
+        <h1 id="page-title">Daftar Halaman</h1>
+        <div class="manage-container">
+            <div id="page-carousel" class="page-carousel"></div>
+            <div id="add-modal" class="modal hidden">
+                <div class="modal-content">
+                    <button type="button" id="cancel-add" class="cancel-btn">X</button>
+                    <h2>Tambah Halaman Baru</h2>
+                    <form id="add-page-form">
+                        <label>Heading: <br><input type="text" name="heading"></label>
+                        <label>Judul: <br><input type="text" name="title"></label>
+                        <label>Deskripsi: <br><textarea name="desc"></textarea></label>
+                        <label>Tipe Halaman: <br><select name="page_type">
+                            <option value="single">Satu Foto</option>
+                            <option value="multi">Banyak Foto</option>
+                        </select></label>
+                        <label>Foto <br><input type="file" name="photos" accept="image/*" multiple></label>
+                        <input type="hidden" name="id">
+                        <button type="submit" class="submit-btn">Tambah Halaman</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="manage.js"></script>
+    </body>
+    <footer>
+        <p>Taro Footer Disini</p>
+    </footer>
+</html>
