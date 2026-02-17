@@ -61,7 +61,7 @@ function renderCards(pages) {
         let shortDesc = "";
         if (page.desc) {
             const words = page.desc.split(" ");
-            shortDesc = words.length > 10 ? words.slice(0, 9).join(" ") + "..." : page.desc;
+            shortDesc = words.length > 10 ? words.slice(0, 19).join(" ") + "..." : page.desc;
         }
         card.innerHTML = `
             <img src="/uploads/${imgSrc}">
@@ -116,3 +116,10 @@ cancelAdd.addEventListener("click", () => {
 });
 
 loadPages();
+
+//return back to kiosk view without mouse
+window.addEventListener("keydown", (e) => {
+  if (e.key === "F1") {
+    window.location.href = "/";
+  }
+});

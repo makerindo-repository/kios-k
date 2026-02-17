@@ -86,3 +86,10 @@ function renderMultiPage(page) {
 }
 
 document.addEventListener("DOMContentLoaded", loadPages) ;
+
+//shortcut maker for accessing /manage without typing in URL
+window.addEventListener("keydown", (e) => {
+  if (e.key === "F2") {
+    window.location.href = "/manage";
+  }
+});
