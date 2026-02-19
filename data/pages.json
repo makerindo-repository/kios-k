@@ -1,22 +1,26 @@
 [
   {
-    "id": "07dc0f84-e06c-4541-a0c5-df2da97be497",
-    "heading": "Produk Kami",
-    "title": "TetoBot v4.1",
-    "desc": "Ini adalah robot berbentuk Kasane Teto yang entah kenapa selalu coconut lari (kelaparan xixixi). Tetep sih, my bini :P",
-    "page_type": "single",
-    "photo_many": [],
-    "photo_one": "1237bad7aa0ffe0d595f9aee96a064cb"
+    "id": "a884ee80-9e9c-44f6-8d8c-7eeb0d8cd4aa",
+    "heading": "Aktivitas Kami",
+    "title": "Ujikom Prodi Teknologi Komputer",
+    "desc": "Uji kompetensi ini dilaksanakan dari 22 Desember sampai 24 Desember 2025 di Politeknik Pajajaran. Bidang kompetensinya di antara lain: Junior Web Programmer / Developer, dan Basic Industrial Internet of Things.",
+    "page_type": "multi",
+    "photo_many": [
+      "c07f14649d2072540558abc13e523cb0",
+      "da26099ece18ee0d835bac65d9da8cbc",
+      "0f04de0c9ec54fd5f5bfe285b3b35e13"
+    ]
   },
   {
-    "id": "f60813aa-6d05-4417-a4bd-8b2f5f9a275b",
-    "heading": "Produk Kami",
-    "title": "Ayam Goreng Krispi 67",
-    "desc": "Pernah pengen makan ayam? NGGA! Mari coba ayam enak kami di toko ayam SIXSEVEN CITY BOY CITY BOY!!!!",
-    "page_type": "single",
+    "id": "a51ef158-92dd-40cd-a15d-c1f865ae8704",
+    "heading": "Aktivitas Kami",
+    "title": "Ujikom SMK Negeri 1 Katapang",
+    "desc": "Dilaksanakan pada tanggal 9 Desember 2025 di SMK Negeri 1 Katapang. Diikuti oleh seluruh kelas 12 / XII jurusan Rekayasa Perangkat Lunak.",
+    "page_type": "multi",
     "photo_many": [
-      "d8fa8ffdd0f2d980807368f0efb99571"
-    ],
-    "photo_one": "8319e36d47ce27d04af021c2103f1a57"
+      "467dd95acd325dfc3328d56afdef9a45",
+      "76488bb96d44c22038f340b929827e25",
+      "1c32bb5726301d3bdda6a582fe432e88"
+    ]
   }
 ]

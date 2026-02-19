@@ -14,5 +14,5 @@ app.get("/manage", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log("Server anda berlari di [http://localhost:6767]")
+    console.log(`Server berjalan di [http://localhost:${PORT}]`)
 });

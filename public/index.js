@@ -3,10 +3,9 @@ let currentIndex = 0;
 let pageInterval = null;
 let carouselInterval = null;
 
-const PAGE_INTERVAL = 5000;
+const PAGE_INTERVAL = 7000;
 const CAROUSEL_INTERVAL = 2000;
 const container = document.getElementById('page-container');
-
 
 //load and shoot
 async function loadPages() {
@@ -55,14 +54,17 @@ function renderSinglePage(page) {
   const photo = page.photo_one;
   
   container.innerHTML = `
-    <section class="page single-page">
-      <img src="/uploads/${photo}" class="single-image">  
-      <div class="content">
-        <h2>${page.heading}</h2>
-        <h1>${page.title}</h1>
-        <div class="description"><p>${page.desc}</p></div>
+    <section class="page active">
+      <h2>${page.heading}</h2>
+      <div class="content-template">
+        <img src="/assets/techline.webp" id="lefttech">
+        <img src="/uploads/${photo}" alt="" class="single-image">
+        <img src="/assets/techline.webp" id="righttech">
       </div>
+      <h1>${page.title}</h1>
+      <div class="description"><p>${page.desc}</p></div>
     </section>
+
 ` ;
 }
 function renderMultiPage(page) {
@@ -70,22 +72,79 @@ function renderMultiPage(page) {
   const photos = Array.isArray(page.photo_many) ? page.photo_many : [];
 
   container.innerHTML = `
-    <section class="page multi-page">
-      <div class="carousel">
-        ${photos.map((img, i) => `<img src="/uploads/${img}" class="carousel-image ${i === 0 ? "visible" : ""}">`).join("")}
+    <section class="page active">
+      <h2>${page.heading}</h2>
+      <div class="content-template">
+        <img src="/assets/techline.webp" id="lefttech">
+        <div class="carousel">${photos.map((img, i) => `<img src="/uploads/${img}" class="carousel-image ${i === 0 ? "visible" : ""}">`).join("")}</div>
+        <img src="/assets/techline.webp" id="righttech">
       </div>
-      <div class="content">
-        <h2>${page.heading}</h2>
-        <h1>${page.title}</h1>
-        <div class="description"><p>${page.desc}</p></div>
-      </div>
+      <h1>${page.title}</h1>
+      <div class="description"><p>${page.desc}</p></div>
     </section>
   `;
   
   startCarousel(PAGE_INTERVAL / photos.length);
 }
 
+//clock and date and message
+function updateClock() {
+  const timeEl = document.getElementById("time");
+  const dateEl = document.getElementById("date");
+  const message = document.getElementById("message");
+
+  const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const months = [
+  "Januari","Februari","Maret","April","Mei","Juni",
+  "Juli","Agustus","September","Oktober","November","Desember"
+  ];
+  const now = new Date();
+
+  //time
+  const hours = now.getHours().toString().padStart(2, "0");
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const seconds = now.getSeconds().toString().padStart(2, "0");
+  timeEl.textContent = `${hours}:${minutes}:${seconds}`;
+
+  //date
+  const dayName = days[now.getDay()];
+  const date = now.getDate();
+  const monthName = months[now.getMonth()];
+  const year = now.getFullYear();
+  dateEl.textContent = `${dayName}, ${date} ${monthName} ${year}`;
+
+  if (hours >= 6 && hours < 12) {
+    message.textContent = "Selamat Pagi!"
+    if (hours == 9 && minutes == 22) {
+      message.textContent = "Selamat Bekerja!"
+    }
+  }
+  else if (hours >= 12 && hours < 15) {
+    if (hours == 12 && minutes == 0) {
+      message.textContent = "Selamat Makan Siang, Semuanya!"
+    }
+    message.textContent = "Selamat Siang!"
+  }
+  else if (hours >= 15 && hours < 18) {
+    message.textContent = "Selamat Sore!"
+    if (hours == 17 && minutes == 0) {
+      if (dayName == "Jumat") {
+        message.textContent = "Sampai Jumpa Senin Nanti!"
+      }
+      else {
+        message.textContent = "Sampai Jumpa Esok!"
+      }
+    }
+  }
+  else {
+    message.textContent = "Selamat Malam!"
+  }
+  message.style.backgroundColor = "#10507c"
+}
+
 document.addEventListener("DOMContentLoaded", loadPages) ;
+updateClock();
+setInterval(updateClock, 1000)
 
 //shortcut maker for accessing /manage without typing in URL
 window.addEventListener("keydown", (e) => {
