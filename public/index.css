@@ -29,6 +29,14 @@ html, body {
     transform: translate(-50px, -50px)
   }
 }
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
 
 /*Header and all her children*/
 header {
@@ -130,10 +138,6 @@ main {
   align-items: center;
   flex-direction: row;
 }
-.content-template img {
-  width: 400px;
-  border-radius: 10px;
-}
 .carousel {
     position: relative; 
     height: 25vh;
@@ -143,7 +147,7 @@ main {
 }
 .single-image { 
     position: relative; 
-    height: 400px; 
+    height: 25vh; 
     border-radius: 10px;
 }
 .carousel-image {
@@ -193,6 +197,37 @@ main {
   text-align: center;
   color: #10507c;
   font-size: 1.5rem;
+}
+.mou {
+  position: absolute;
+  bottom: 150px;
+  width: 100%;
+  text-align: center;
+  margin: 20px 0px;
+}
+.mou h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  color: #10507c;
+  margin: 20px 0px;
+}
+.mou-mover {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 20s linear infinite;
+}
+.mou-set {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  flex-shrink: 0;
+  margin-right: 50px;
+}
+.mou-set img {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
 }
 .circle {
   opacity: 1;

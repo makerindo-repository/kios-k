@@ -22,5 +22,95 @@
       "76488bb96d44c22038f340b929827e25",
       "1c32bb5726301d3bdda6a582fe432e88"
     ]
+  },
+  {
+    "id": "cac940ee-df6d-484f-8896-a09f6e99ccc6",
+    "heading": "Produk Kami",
+    "title": "Precision Agriculture Trainer Kit",
+    "desc": "Sebuah Trainer Kit untuk praktikum Fakultas Pertanian, dengan fitur penyiraman otomatis serta sistem pengecekan unsur basa tanah.",
+    "page_type": "single",
+    "photo_one": "1012b8ae467659ea2dfef35f7c6bf8f1",
+    "photo_many": []
+  },
+  {
+    "id": "37e58839-1aeb-4d11-b676-a27b7255d261",
+    "heading": "Produk Kami",
+    "title": "Bulldozer Subsoil",
+    "desc": "Alat berbasis Internet of Things, yang digunakan untuk mendeteksi progres pekerjaan & kedalaman tanah galian bulldozer dengan sensor ultrasonic dan GPS.",
+    "page_type": "single",
+    "photo_one": "99cabfffa60605e34aab036d698cdcb2",
+    "photo_many": []
+  },
+  {
+    "id": "8db6e000-7a52-4361-a573-5ca416345eb2",
+    "heading": "Produk Kami",
+    "title": "Smart Halter",
+    "desc": "Halter kuda berbasis Internet of Things untuk memantau kesehatan kuda secara real time, dengan versi lainnya yang memiliki GPS untuk pemantauan lokasi.",
+    "page_type": "single",
+    "photo_one": "fd4d5d3253c329cb8035dd135be624d5",
+    "photo_many": []
+  },
+  {
+    "id": "dde7ab1c-6c7c-4396-8dc3-6729cc90fd67",
+    "heading": "Produk Kami",
+    "title": "Air Quality Monitoring System",
+    "desc": "Sistem Internet of Things untuk setiap orang yang melakukan usaha atau kegiatan berkewajiban untuk memberikan informasi yang terkait dengan perlindungan dan pengelolaan lingkungan hidup secara benar, akurat, terbuka dan tepat waktu.</p>",
+    "page_type": "single",
+    "photo_one": "aed5c2ba651212ec1042973962e1b75a",
+    "photo_many": []
+  },
+  {
+    "id": "a1454133-e76a-41d8-9306-a766ddb6eb04",
+    "heading": "Produk Kami",
+    "title": "Makerindo EDU",
+    "desc": "Platform Learning Management System (LMS) inovatif yang dirancang khusus untuk pelatihan di bidang Internet of Things (IoT). Dengan antarmuka yang user-friendly dan konten yang komprehensif.",
+    "page_type": "single",
+    "photo_one": "a7b79152368b142fc5812a313145eee8",
+    "photo_many": []
+  },
+  {
+    "id": "569eb5dd-ae8a-4fd9-8bf2-7fba9ce9f776",
+    "heading": "Produk Kami",
+    "title": "Rekap Nilai DITRESKRIMSUS",
+    "desc": "Aplikasi yang diterapkan pada lingkungan kerja Ditreskrimsus Polda Jabar, dirancang untuk mengelola dan merekap data penilaian personel secara efisien dan akurat.",
+    "page_type": "single",
+    "photo_one": "826a355383f5b960e32a934185d38636",
+    "photo_many": []
+  },
+  {
+    "id": "9a798728-0937-47b2-93ba-1615801abaf0",
+    "heading": "Produk Kami",
+    "title": "e-Polres",
+    "desc": "Aplikasi pemantauan terpadu berbasis Sistem Informasi Geografis (SIG) yang dirancang untuk memantau personel dan anggota kepolisian di Satuan Kerja Polres Banjar.",
+    "page_type": "single",
+    "photo_one": "196ceb33e2e0568bc283b13f280a697f",
+    "photo_many": []
+  },
+  {
+    "id": "56d66cbc-6a80-4706-8aff-762096c7807c",
+    "heading": "Produk Kami",
+    "title": "RT RW Cerdas",
+    "desc": "<p>Aplikasi mobile dan web yang dirancang untuk mempermudah pengelolaan administrasi dan komunikasi di tingkat RT dan RW.",
+    "page_type": "single",
+    "photo_one": "fdc761f7217c2573a15879e018f7acfe",
+    "photo_many": []
+  },
+  {
+    "id": "0f16d6e8-7092-4b2d-9cd6-a664c3fbba1c",
+    "heading": "Produk Kami",
+    "title": "Rapid Soil Checker",
+    "desc": "Alat untuk mengukur kandungan unsur hara tanah (N, P, K) dan sifat fisik tanah (pH tanah, EC tanah, kelembapan tanah, dan suhu tanah) serta suhu dan kelembapan lingkungan.",
+    "page_type": "single",
+    "photo_one": "3fc4c22632e1fe56fc97521909fdc43f",
+    "photo_many": []
+  },
+  {
+    "id": "cb5a1322-87a9-4704-9b70-474f2d2e37e0",
+    "heading": "Produk Kami",
+    "title": "Bitanic Pro",
+    "desc": "Solusi terdepan untuk pertanian dengan lahan lebih dari 1 hektar, dengan tambahan head unit pompa terintegrasi untuk meningkatkan efisiensi dalam kontrol irigasi dan fertilisasi.",
+    "page_type": "single",
+    "photo_one": "e0cbbcf7c1c1671e95da7e568a5e235b",
+    "photo_many": []
   }
 ]
