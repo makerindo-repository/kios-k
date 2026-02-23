@@ -96,21 +96,25 @@
     "photo_many": []
   },
   {
-    "id": "0f16d6e8-7092-4b2d-9cd6-a664c3fbba1c",
-    "heading": "Produk Kami",
-    "title": "Rapid Soil Checker",
-    "desc": "Alat untuk mengukur kandungan unsur hara tanah (N, P, K) dan sifat fisik tanah (pH tanah, EC tanah, kelembapan tanah, dan suhu tanah) serta suhu dan kelembapan lingkungan.",
-    "page_type": "single",
-    "photo_one": "3fc4c22632e1fe56fc97521909fdc43f",
-    "photo_many": []
+    "id": "cb5a1322-87a9-4704-9b70-474f2d2e37e0",
+    "heading": "Produk Kita",
+    "title": "Bitanic 3",
+    "desc": "Deskripsi untuk Bitanic 3",
+    "page_type": "multi",
+    "photo_one": "e0cbbcf7c1c1671e95da7e568a5e235b",
+    "photo_many": [
+      "a57d2cc84b3ef71e3ed4cd5890d570f2",
+      "58a3dd5cfbb3074e557eb3792f7d7b71",
+      "ccec0d39d25028ea0951fdb33f3ab983"
+    ]
   },
   {
-    "id": "cb5a1322-87a9-4704-9b70-474f2d2e37e0",
+    "id": "e051041e-3940-4052-94f1-a8a0eae60610",
     "heading": "Produk Kami",
-    "title": "Bitanic Pro",
-    "desc": "Solusi terdepan untuk pertanian dengan lahan lebih dari 1 hektar, dengan tambahan head unit pompa terintegrasi untuk meningkatkan efisiensi dalam kontrol irigasi dan fertilisasi.",
+    "title": "Bitanic 2",
+    "desc": "Isi deskripsi nanti saja",
     "page_type": "single",
-    "photo_one": "e0cbbcf7c1c1671e95da7e568a5e235b",
+    "photo_one": "d2797f0e56a597c9e901496e235095a4",
     "photo_many": []
   }
 ]

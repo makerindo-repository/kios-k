@@ -6,6 +6,7 @@ let carouselInterval = null;
 const PAGE_INTERVAL = 7000;
 const CAROUSEL_INTERVAL = 2000;
 const container = document.getElementById('page-container');
+const mouSets = document.querySelectorAll('.mou-set')
 
 //load and shoot
 async function loadPages() {
@@ -87,6 +88,34 @@ function renderMultiPage(page) {
   startCarousel(PAGE_INTERVAL / photos.length);
 }
 
+//load the mou carousel
+async function loadMoUs() {
+  try {
+    const res = await fetch("/api/mou");
+    const moUs = await res.json();
+
+    // Clear both sets
+    const mouSets = document.querySelectorAll(".mou-set");
+    mouSets.forEach(set => (set.innerHTML = ""));
+
+    // Create image elements once
+    const logos = moUs.map(logo => {
+      const img = document.createElement("img");
+      img.src = `/uploads/${logo.image}`;
+      img.alt = "MoU Logo";
+      img.className = "mou-logo";
+      return img;
+    });
+
+    // Append the same logos to both sets
+    mouSets.forEach(set => {
+      logos.forEach(img => set.appendChild(img.cloneNode(true)));
+    });
+  } catch (err) {
+    console.error("Failed to load MoUs:", err);
+  }
+}
+
 //clock and date and message
 function updateClock() {
   const timeEl = document.getElementById("time");
@@ -142,7 +171,9 @@ function updateClock() {
   message.style.backgroundColor = "#10507c"
 }
 
-document.addEventListener("DOMContentLoaded", loadPages) ;
+document.addEventListener("DOMContentLoaded", () => {
+  loadPages(), loadMoUs()
+});
 updateClock();
 setInterval(updateClock, 1000)
 

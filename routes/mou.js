@@ -2,47 +2,55 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
-const upload = multer({ dest: path.join(__dirname, "..", "public", "uploads") });
 const { randomUUID } = require("crypto");
 
 const router = express.Router();
-const DATA_FILE = path.join(__dirname, "..", "data", "mou.json");
+const DATA_FILE = path.join(__dirname, "..", "data", "logos.json");
+
+const upload = multer({ dest: path.join(__dirname, "..", "public", "uploads") });
 
 function readMou() {
     return JSON.parse(fs.readFileSync(DATA_FILE));
 }
-function writeMou(pages) {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(pages, null, 2));
+function writeMou(logos) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(logos, null, 2));
 }
 
+// GET all logos
 router.get("/", (req, res) => {
     res.json(readMou());
 });
-router.post("/", upload.single("logo"), (req, res) => {
-    const mou = readMou();
-    const newMoU = {
+
+// POST new logo
+router.post("/", upload.single("image"), (req, res) => {
+    const logos = readMou();
+    const newLogo = {
         id: randomUUID(),
-        logo: req.file.logo
+        image: req.file ? req.file.filename : null
     };
-    mou.push(newMoU);
-    writeMou(mou);
-    res.status(201).json(newMoU);
+    logos.push(newLogo);
+    writeMou(logos);
+    res.status(201).json(newLogo);
 });
-router.put("/:id", upload.single("logo"), (req, res) => {
-    const mou = readMou();
-    const index = mou.findIndex(p => p.id == req.params.id);
-    if (index === -1) return res.status(404).json({ error: "Not found"});
-    
+
+// PUT update logo
+router.put("/:id", upload.single("image"), (req, res) => {
+    const logos = readMou();
+    const index = logos.findIndex(l => l.id === req.params.id);
+    if (index === -1) return res.status(404).json({ error: "Not found" });
+
     if (req.file) {
-        mou[index].filename = req.file.logo
+        logos[index].image = req.file.filename;
     }
 
-    writeMou(mou);
-    res.json(mou[index]);
+    writeMou(logos);
+    res.json(logos[index]);
 });
+
+// DELETE logo
 router.delete("/:id", (req, res) => {
-    const mou = readMou().filter(l => l.id !== req.params.id);
-    writeMou(pages);
+    const logos = readMou().filter(l => l.id !== req.params.id);
+    writeMou(logos);
     res.json({ success: true });
 });
 
