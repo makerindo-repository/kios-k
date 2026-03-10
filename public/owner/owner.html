@@ -1,0 +1,71 @@
+<!--Song for this file: 人マニア by 重音テト-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manage Content</title>
+        <link rel="stylesheet" href="/owner/owner.css">
+    </head>
+    <body>
+        <div class="manage-container">
+            <h1 id="page-title">Daftar Halaman</h1>
+            <div id="page-carousel" class="page-carousel">
+            </div>
+        </div>
+
+        <div id="add-page-modal" class="modal hidden">
+            <div class="modal-content">
+                <button type="button" id="cancel-add" class="cancel-btn">X</button>
+                <h2>Form Halaman</h2>
+                <form id="add-page-form">
+                    <label>Heading: <br><input type="text" name="heading"></label>
+                    <label>Judul: <br><input type="text" name="title"></label>
+                    <label>Deskripsi: <br><textarea name="description"></textarea></label>
+                    <label>Tipe Halaman: <br><select name="page_type">
+                        <option value="single">Satu Foto</option>
+                        <option value="multi">Banyak Foto</option>
+                    </select></label>
+                    <label>Foto <br><input type="file" name="photos" accept="image/*" multiple></label>
+                    <input type="hidden" name="id">
+                    <button type="submit" class="submit-btn">Tambah / Edit Halaman</button>
+                </form>
+            </div>
+        </div>    
+        <div id="edit-welcome-modal" class="modal hidden">
+            <div class="modal-content">
+                <button type="button" id="cancel-add" class="cancel-btn button alert">X</button>
+                <h2>Form Halaman</h2>
+                <form id="edit-welcome-form">
+                    <label>Kalimat: <br><input type="text" name="heading"></label>
+                    <label>Deskripsi: <br><textarea name="description"></textarea></label>
+                    <label>Foto <br><input type="file" name="photos" accept="image/*" multiple></label>
+                    <input type="hidden" name="id">
+                    <button type="submit" class="submit-btn button default">Edit Halaman Selamat Datang</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="manage-container">
+            <h1 id="page-title">Daftar MoU</h1>
+            <div id="mou-carousel" class="mou-carousel"></div>
+            <div id="add-mou-modal" class="modal hidden">
+                <div class="modal-content">
+                    <button type="button" id="cancel-add" class="cancel-btn">X</button>
+                    <h2>Form MoU</h2>
+                    <form id="add-mou-form">
+                        <label>Logo <br><input type="file" name="image" accept="image/*" multiple></label>
+                        <input type="hidden" name="id">
+                        <button type="submit" class="submit-btn">Tambah  / Edit Logo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="manage-container buttons">
+            <button class="button alert logout">Logout</button>
+        </div>
+        <script src="/owner/owner.js"></script>
+    </body>
+    <footer>
+        <p>Makerindo Prima Solusi, 2026-sekarang</p>
+    </footer>
+</html>

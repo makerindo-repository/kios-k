@@ -1,0 +1,78 @@
+<!--Song for this file: 人マニア by 重音テト-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manage KIOS-K</title>
+        <link rel="stylesheet" href="/superadmin/sadmin.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    </head>
+    <body>
+        <div class="manage-container">
+            <h1 id="page-title">Peta Lokasi KIOS-K</h1>
+            <div id="map" style="height: 500px; width: 100%;"></div>
+        </div>
+        <div id="kiosk-modal" class="modal hidden">
+            <div class="modal-content">
+                <button type="button" id="cancel-edit" class="cancel-btn">X</button>
+                <h2>Form KIOS-K</h2>
+                <form id="kiosk-form">
+                    <label>Nama: <br><input type="text" name="name"></label>
+                    <label>Pemilik: <br><select name="owner"></select></label>
+                    <input type="hidden" name="id">
+                    <button type="submit" class="submit-btn">Edit KIOS-K</button>
+                </form>
+            </div>
+        </div>
+        <div id="user-modal" class="modal hidden">
+            <div class="modal-content">
+                <button type="button" id="cancel-add-user" class="cancel-btn">X</button>
+                <h2>Form User</h2>
+                <form id="user-form">
+                    <label>Username: <br><input type="text" name="username"></label>
+                    <label>Email: <br><input type="text" name="email"></label>
+                    <label>Password: <br><input type="password" name="password"></label> <!--Find a way to make this password fields to change depending are we adding new user (confirm pass) or editing (check old password)-->
+                    <!-- <label>Konfirmasi Password: <br><input type="password" name="confirm"></label> -->
+                    <input type="hidden" name="id">
+                    <button type="submit" class="submit-btn">Tambah / Edit Pengguna</button>
+                </form>
+            </div>
+        </div>
+        <div class="large-container">
+            <div class="manage-container">
+                <h1>Daftar KIOS-K</h1>
+                <table class="table" id="kiosk-table" border="1">
+                    <thead>
+                        <tr>
+                            <th class="number">#</th>
+                            <th>Pemilik</th>
+                            <th>Nama KIOS-K</th>
+                            <th>Status</th>
+                            <th class="action">Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="manage-container">
+                <h1>Daftar Pengguna</h1>
+                <table class="table" id="user-table" border="1">
+                    <thead>
+                        <tr>
+                            <th class="number">#</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th class="action">Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="manage-container buttons">
+            <button class="button alert logout">Logout</button>
+        </div>
+        <script src="/superadmin/sadmin.js"></script>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    </body>
+    <footer>
+        <p>Makerindo Prima Solusi, 2026-sekarang</p>
+    </footer>
+</html>
