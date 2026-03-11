@@ -248,7 +248,7 @@ function renderWelcomePage(page) {
       <h2>${page.heading}</h2>
       <div class="content-template">
         <img src="/assets/techline.webp" id="lefttech">
-        <img src="/uploads/${photo}" alt="" class="single-image">
+        <img src="/uploads/${photo}" alt="" class="single-image" id="logo">
         <img src="/assets/techline.webp" id="righttech">
       </div>
       <div class="description"><p>${page.description || page.desc || ""}</p></div>

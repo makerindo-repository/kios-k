@@ -186,6 +186,7 @@ main {
 }
 #logo {
   width: 550px;
+  height: auto;
 }
 
 /*Footer and all of their children*/
