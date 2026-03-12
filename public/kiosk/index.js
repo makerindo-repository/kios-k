@@ -309,10 +309,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 updateClock();
 setInterval(updateClock, 1000);
-
-//shortcut maker for accessing /manage without typing in URL
-window.addEventListener("keydown", (e) => {
-  if (e.key === "F2") {
-    window.location.href = "/manage";
-  }
-});

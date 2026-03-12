@@ -11,9 +11,6 @@ let ownersData = []; // cache owner list for kiosk editing
 const token = localStorage.getItem("token");
 console.log(token);
 console.log(localStorage.getItem("role"));
-// if (!token) {
-//     window.location.href = "/login";
-// };
 
 // Helper to add token to fetch requests
 function apiFetch(url, options = {}) {
@@ -57,6 +54,8 @@ function showAccessDenied(title) {
 document.addEventListener("DOMContentLoaded", async () => {
     await loadKiosks();
     await loadUsers();
+    // await loadKioskStats();
+    // await loadUserStats();
     ownersData = usersData.filter(u => u.role === 'owner');
     console.log("Your owners data are: ", ownersData);
     await loadKioskMap();
@@ -107,24 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     kioskForm.addEventListener("submit", async (e) => {
-        // e.preventDefault();
-        // const id = kioskForm.elements["id"].value;
-        // const name = kioskForm.elements["name"].value.trim();
-        // const owner_id = kioskForm.elements["owner"].value || null;
-        // try {
-        // const res = await apiFetch(`/api/admin/kiosks/${id}`, {
-        //         method: "PUT",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({ name, owner_id })
-        //     });
-        //     if (!res.ok) throw new Error(`status ${res.status}`);
-        //     kioskModal.classList.add("hidden");
-        //     await loadKiosks();
-        // } catch (err) {
-        //     console.error("Failed to update kiosk", err);
-        //     alert("Gagal memperbarui kiosk");
-        // }
-                e.preventDefault();
+        e.preventDefault();
         let id = kioskForm.elements["id"].value.trim();
         // sanitize id - only allow digits
         const name = kioskForm.elements["name"].value.trim();
@@ -384,6 +366,29 @@ async function loadKioskMap() {
     } catch (error) {
         console.error("Failed to load kiosk map:", error);
     }
+}
+async function loadKioskStats() {
+    const res = await apiFetch("/api/admin/kiosks");
+    const kiosks = await res.json();
+
+    let all = kiosks.length;
+    let active = 0;
+    let blocked = 0;
+
+    kiosks.forEach(k => {
+        if (k.status === "active") active++;
+        else blocked++;
+    })
+
+    document.getElementById("stat-all").textContent = all;
+    document.getElementById("stat-active").textContent = active;
+    document.getElementById("stat-blocked").textContent = blocked;
+}
+async function loadUserStats() {
+    const res = await apiFetch("/api/admin/users");
+    const users = await res.json();
+
+    document.getElementById("stat-users").textContent = users.length;
 }
 
 //other

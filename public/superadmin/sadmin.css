@@ -97,12 +97,3 @@ html, body {
 .cancel-btn {
     background-color: #f3f3f300;
 }
-
-/*Footer, duh*/
-footer {
-    background-color: #10507c;
-    color: white;
-    height: 50px;
-    flex-shrink: 0;
-    text-align: center;
-}

@@ -4,6 +4,7 @@
     <head>
         <title>Manage Content</title>
         <link rel="stylesheet" href="/owner/owner.css">
+        <script src="/owner/owner.js" defer></script>
     </head>
     <body>
         <div class="manage-container">
@@ -11,7 +12,24 @@
             <div id="page-carousel" class="page-carousel">
             </div>
         </div>
-
+        <div class="manage-container">
+            <h1 id="page-title">Daftar MoU</h1>
+            <div id="mou-carousel" class="mou-carousel"></div>
+            <div id="add-mou-modal" class="modal hidden">
+                <div class="modal-content">
+                    <button type="button" id="cancel-add" class="cancel-btn">X</button>
+                    <h2>Form MoU</h2>
+                    <form id="add-mou-form">
+                        <label>Logo <br><input type="file" name="image" accept="image/*" multiple></label>
+                        <input type="hidden" name="id">
+                        <button type="submit" class="submit-btn">Tambah  / Edit Logo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="manage-container buttons">
+            <button class="button alert logout">Logout</button>
+        </div>
         <div id="add-page-modal" class="modal hidden">
             <div class="modal-content">
                 <button type="button" id="cancel-add" class="cancel-btn">X</button>
@@ -43,29 +61,5 @@
                 </form>
             </div>
         </div>
-
-        <div class="manage-container">
-            <h1 id="page-title">Daftar MoU</h1>
-            <div id="mou-carousel" class="mou-carousel"></div>
-            <div id="add-mou-modal" class="modal hidden">
-                <div class="modal-content">
-                    <button type="button" id="cancel-add" class="cancel-btn">X</button>
-                    <h2>Form MoU</h2>
-                    <form id="add-mou-form">
-                        <label>Logo <br><input type="file" name="image" accept="image/*" multiple></label>
-                        <input type="hidden" name="id">
-                        <button type="submit" class="submit-btn">Tambah  / Edit Logo</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="manage-container buttons">
-            <button class="button alert logout">Logout</button>
-        </div>
-        <script src="/owner/owner.js"></script>
     </body>
-    <footer>
-        <p>Makerindo Prima Solusi, 2026-sekarang</p>
-    </footer>
 </html>

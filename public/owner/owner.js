@@ -1,6 +1,5 @@
 //Song for this file: Monitoring by DECO*27
 //constants and variables
-let cards = [];
 const pageContainer = document.getElementById("page-carousel");
 const mouContainer = document.getElementById("mou-carousel");
 const addPageModal = document.getElementById("add-page-modal");
@@ -9,6 +8,7 @@ const addMouModal = document.getElementById("add-mou-modal");
 const addMouForm = document.getElementById("add-mou-form");
 const urlParams = new URLSearchParams(window.location.search);
 let kioskId = urlParams.get("kiosk");
+
 
 //check authorization
 if (!kioskId) {
@@ -359,6 +359,11 @@ document.querySelector(".logout")?.addEventListener("click", () => {
 
     // Redirect to login
     window.location.href = "/login";
+});
+document.addEventListener("keydown", function(e) {
+    if(e.key === 'F2') {
+        window.location.href = `/kiosk/${kioskId}`;
+    }
 });
 //call the whole 300 lines of code and logos
 loadPages();
