@@ -5,6 +5,7 @@ const path = require("path");
 const multer = require("multer");
 const { authenticate } = require("../middleware/auth");
 const { requireOwner } = require("../middleware/roles");
+const { notifyDisplay } = require("../websocket");
 
 const router = express.Router();
 const upload = multer({ dest: path.join(__dirname, "..", "public", "uploads") });
@@ -45,12 +46,13 @@ router.post("/kiosk/:kioskId/contents", upload.array("photos", 5), async (req, r
          VALUES (?, ?, ?, ?, ?, ?)`,
         [kioskId, heading, title, description, JSON.stringify(files), page_type]
     );
+    notifyDisplay(kioskId);
     res.status(201).json({ id: result.insertId });
 });
 
 router.put("/kiosk/:kioskId/contents/:id", upload.array("photos", 5), async (req, res) => {
     const { kioskId, id } = req.params;
-    const files = req.files.map(f => f.filename);
+    const files = (req.files || []).map(f => f.filename);
 
     await pool.query(
         `UPDATE contents SET
@@ -65,13 +67,14 @@ router.put("/kiosk/:kioskId/contents/:id", upload.array("photos", 5), async (req
     if (files.length > 0) {
         await pool.query("UPDATE contents SET photos = ? WHERE id = ? AND kiosk_id = ?", [JSON.stringify(files), id, kioskId]);
     }
-
+    notifyDisplay(kioskId);
     res.json({ success: true });
 });
 
 router.delete("/kiosk/:kioskId/contents/:id", async (req, res) => {
     const { kioskId, id } = req.params;
     await pool.query("DELETE FROM contents WHERE id = ? AND kiosk_id = ?", [id, kioskId]);
+    notifyDisplay(kioskId);
     res.json({ success: true });
 });
 

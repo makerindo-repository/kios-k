@@ -1,7 +1,11 @@
 //Song for this file: Mesmerizer by 32ki, Hatsune Miku & Kasane Teto
 const express = require("express");
+const http = require("http");
 const path = require("path");
+const { init } = require("./websocket");
 const app = express();
+const server = http.createServer(app);
+init(server);
 const PORT = 8000;
 
 app.use(express.json());
@@ -29,6 +33,6 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'superadmin', 'sadmin.html'));
 })
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server berjalan di [http://localhost:${PORT}]`)
 });

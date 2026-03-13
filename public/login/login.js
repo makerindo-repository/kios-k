@@ -6,6 +6,7 @@ function showKiosks(kiosks) {
     container.innerHTML = "<h2>Pilih KIOS-K</h2>";
     kiosks.forEach(kiosk => {
         const btn = document.createElement("button");
+        btn.classList = "button";
         btn.textContent = kiosk.name;
         btn.onclick = () => {
             window.location.href = `/manage/${kiosk.id}`;

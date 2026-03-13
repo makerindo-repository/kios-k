@@ -368,6 +368,3 @@ document.addEventListener("keydown", function(e) {
 //call the whole 300 lines of code and logos
 loadPages();
 loadLogos();
-loadSoapLogs();
-
-//loadSoapLogs();

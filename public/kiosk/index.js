@@ -87,7 +87,33 @@ function updateLocation() {
   }, (err) => {
     console.warn("User denied or unavailable location", err);
   });
-};
+}
+function startWebSocket(kioskId) {
+  const ws = new WebSocket(`ws://${location.host}`);
+  ws.onopen = () => {
+    console.log("[WS] connected");
+  };
+  ws.onmessage = (event) => {
+    let msg;
+    try {
+      msg = JSON.parse(event.data);
+    } catch (err) {
+      console.warn("Non-JSON WS message:", event.data);
+      return;
+    }
+    if (msg.type === "refresh" && msg.kiosk == kioskId) {
+      console.log("[WS] refresh received for kiosk", kioskId);
+
+      loadContents();
+      loadMoUs();
+    }
+  };
+
+  ws.onclose = () => {
+    console.log("[WS] disconnected, retrying...");
+    setTimeout(() => startWebSocket(kioskId), 3000); // auto reconnect
+  };
+}
 
 function apiFetch(url, options = {}) {
     const token = localStorage.getItem("token");
@@ -128,6 +154,15 @@ function showAccessDenied(title) {
 
 // load contents for this kiosk and start the carousel
 async function loadContents() {
+  if (pageInterval) {
+    clearInterval(pageInterval);
+    pageInterval = null;
+  }
+  if (carouselInterval) {
+    clearInterval(carouselInterval);
+    carouselInterval = null;
+  }
+  
   const params = new URLSearchParams(window.location.search);
   let kioskId = params.get("kiosk");
   if (!kioskId) {
@@ -150,6 +185,7 @@ async function loadContents() {
     const pages = await res.json();
     console.log("[kiosk] pages returned:", pages);
     pageData = pages;
+    currentIndex = 0;
     showPage(currentIndex);
     pageInterval = setInterval(() => {
       currentIndex = (currentIndex + 1) % pageData.length;
@@ -301,6 +337,16 @@ async function loadMoUs() {
 // and run Mou carousel using DOMContentLoaded
 
 document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  let kioskId = params.get("kiosk");
+  if (!kioskId) {
+    const parts = window.location.pathname.split("/");
+    kioskId = parts[2] || null;
+  }
+  if (kioskId) {
+    startWebSocket(kioskId);
+  }
+
   loadContents();
   loadMoUs();
   updateLocation();
