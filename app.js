@@ -21,16 +21,16 @@ app.use("/api/owner", ownerRouter);
 
 // serve kiosk UI with kiosk id in URL: /kiosk/:kioskId
 app.get('/kiosk/:kioskId', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'kiosk', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'kiosk', 'kiosk.html'));
 });
 app.get('/manage/:kioskId', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'owner', 'owner.html'))
+    res.sendFile(path.join(__dirname, 'public', 'manage', 'manage.html'))
 })
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'))
 })
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'superadmin', 'sadmin.html'));
+    res.sendFile(path.join(__dirname, 'public', 'admin', 'admin.html'));
 })
 
 server.listen(PORT, () => {

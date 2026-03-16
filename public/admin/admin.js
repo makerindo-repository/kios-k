@@ -22,12 +22,12 @@ function apiFetch(url, options = {}) {
     return fetch(url, { ...options, headers }).then(async res => {
 
         if (res.status === 401) {
-            showAccessDenied("Unauthenticated | 401");
+            showAccessDenied("401");
             throw new Error("401 Unauthorized");
         }
 
         if (res.status === 403) {
-            showAccessDenied("Forbidden | 403");
+            showAccessDenied("403 | Forbidden");
             throw new Error("403 Forbidden");
         }
 
@@ -36,16 +36,9 @@ function apiFetch(url, options = {}) {
 }
 function showAccessDenied(title) {
     document.body.innerHTML = `
-        <div style="
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            text-align:center;
-            font-family:sans-serif;
-        ">
+        <div class="forbidden">
             <h1>${title}</h1>
+            <button onclick="window.location.href='/login'" class="button default">Login</button>
         </div>
     `;
 }
@@ -54,8 +47,8 @@ function showAccessDenied(title) {
 document.addEventListener("DOMContentLoaded", async () => {
     await loadKiosks();
     await loadUsers();
-    // await loadKioskStats();
-    // await loadUserStats();
+    await loadKioskStats();
+    await loadUserStats();
     ownersData = usersData.filter(u => u.role === 'owner');
     console.log("Your owners data are: ", ownersData);
     await loadKioskMap();
