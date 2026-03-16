@@ -235,6 +235,18 @@ input, textarea {
     resize: vertical;
 }
 
+.forbidden {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    text-align:center;
+    font-family:sans-serif;
+}
+.forbidden h1 {
+    font-size: 100px;
+}
 
 /*Footer, duh*/
 footer {
