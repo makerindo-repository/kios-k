@@ -138,16 +138,9 @@ function apiFetch(url, options = {}) {
 }
 function showAccessDenied(title) {
     document.body.innerHTML = `
-        <div style="
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            text-align:center;
-            font-family:sans-serif;
-        ">
+        <div class="forbidden">
             <h1>${title}</h1>
+            <button onclick="window.location.href='/login'" class="button">Login</button>
         </div>
     `;
 }
