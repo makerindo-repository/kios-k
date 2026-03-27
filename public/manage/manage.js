@@ -201,7 +201,7 @@ async function editWelcome(id) {
 
         welcomeForm.elements["id"].value = page.id;
         welcomeForm.elements["heading"].value = page.heading;
-        pageForm.elements["description"].value = page.description || page.desc || "";
+        welcomeForm.elements["description"].value = page.description || page.desc || "";
     } catch(error) {
         console.error(error);
         alert("Gagal memuat halaman");
@@ -337,6 +337,36 @@ mouForm.addEventListener("submit", async e => {
     }
 });
 
+welcomeForm.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const id = welcomeForm.elements["id"].value;
+    const formData = new FormData(welcomeForm);
+
+    const method = "PUT";
+    const url = `/api/owner/kiosk/${kioskId}/contents/${id}`;
+
+    try {
+        const res = await apiFetch(url, {
+            method,
+            body: formData
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            alert("Gagal menyimpan halaman welcome: " + err.error);
+            return;
+        }
+
+        welcomeModal.classList.add("hidden");
+        welcomeForm.reset();
+        loadPages();
+
+    } catch (error) {
+        console.error(error);
+        alert("Gagal menyimpan halaman welcome");
+    }
+});
 document.querySelectorAll(".cancel-btn").forEach(btn => {
     btn.addEventListener("click", e => {
         const modal = e.target.closest(".modal");
