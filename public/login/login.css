@@ -1,20 +1,17 @@
-/* login.css */
-
-/* Reset some default styles */
+/*universal*/
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
 }
-
 body, html {
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #fff; /* light gray background for contrast */
+    background-image: linear-gradient(#f7f7f7, #d6e1e9 , #abbfcd ,#104f7a);
 }
 
 h1 {
@@ -25,42 +22,52 @@ h2 {
     text-align: center;
     margin: 10px;
 }
-
 .logo {
     width: 50%;
 }
 
-/* Form inputs */
+/*fields*/
 .card {
     background-color: #d7d7d7;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    min-width: 300px;
-    max-width: 400px;
-    width: 100%;
+    width: 30vw;
     text-align: center;
     margin: 30px;
 }
-input {
+.field-with-icon {
+    position: relative;
     width: 100%;
-    padding: 10px 15px;
+}
+.field-with-icon i {
+    position: absolute;
+    left: 12px;          
+    top: 52.5%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 18px;   
+    pointer-events: none; 
+}
+.field-with-icon input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
     margin: 10px 0;
     background-color: #b5b5b5;
     border: 1px solid #cdcdcd;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
-/* Button styling */
+/*button*/
 button {
     width: 100%;
     padding: 12px;
     margin-top: 15px;
     border: none;
     border-radius: 8px;
-    background-color: #10507c;
-    color: white;
+    background-color: #104f7a;
+    color: #cdcdcd;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -70,7 +77,7 @@ button:hover {
     opacity: 0.85;
 }
 
-/* Optional: hide selection initially */
+/*hide selection before entering*/
 .hidden {
     display: none;
 }

@@ -64,14 +64,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             openKioskModal();
             return;
         }
-        if (e.target.classList.contains("default")) {
+        if (e.target.classList.contains("edit")) {
             const kiosk = kiosksData.find(k => k.id == id);
             if (kiosk) openKioskModal(kiosk);
             return;
         }
-        if (e.target.classList.contains("alert")) {
-            const currentStatus = row.children[3].textContent.trim();
+        if (e.target.classList.contains("block")) {
+            const kiosk = kiosksData.find(k => k.id  == id);
+            const currentStatus = kiosk.status;
+            console.log("HIT");
             await toggleBlock(id, currentStatus);
+        }
+        if (e.target.classList.contains("delete")) {
+            if (confirm("Hapus kios ini?")) {
+                deleteKiosk(id);
+            }
         }
     });
 
@@ -86,12 +93,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             openUserModal();
             return;
         }
-        if (e.target.classList.contains("default")) {
+        if (e.target.classList.contains("edit")) {
             const user = usersData.find(u => u.id == id);
             if (user) openUserModal(user);
             return;
         }
-        if (e.target.classList.contains("alert")) {
+        if (e.target.classList.contains("delete")) {
             if (confirm("Hapus pengguna ini?")) {
                 deleteUser(id);
             }
@@ -244,10 +251,11 @@ async function loadKiosks() {
             <td>${index + 1}</td>
             <td>${k.owner || 'N/A'}</td>
             <td>${k.name}</td>
-            <td>${k.status}</td>
-            <td>
-                <button data-id="${k.id}" class="button default">Edit</button>
-                <button data-id="${k.id}" class="button alert">${k.status === "active" ? "Blokir" : "Aktifkan"}</button>
+            <td>${k.status === "active" ? "Aktif" : "Diblokir"}</td>
+            <td class="action">
+                <button data-id="${k.id}" class="button default edit"><i class="fi fi-rr-edit"></i></button>
+                <button data-id="${k.id}" class="button warning block">${k.status === "active" ? '<i class="fi fi-rr-ban"></i>' : '<i class="fi fi-rr-undo"></i>'}</button>
+                <button data-id="${k.id}" class="button alert delete"><i class="fi fi-rr-trash"></i></button>
             </td>
             `;
             tbody.appendChild(row);
@@ -296,9 +304,9 @@ async function loadUsers() {
             <td>${index + 1}</td>
             <td>${u.username || 'N/A'}</td>
             <td>${u.email}</td>
-            <td>
-                <button data-id="${u.id}" class="button default">Edit</button>
-                <button data-id="${u.id}" class="button alert">Hapus</button>
+            <td class="action">
+                <button data-id="${u.id}" class="button default edit"><i class="fi fi-rr-edit"></i></button>
+                <button data-id="${u.id}" class="button alert delete"><i class="fi fi-rr-trash"></i></button>
             </td>
             `;
             tbody.appendChild(row);
@@ -395,8 +403,20 @@ async function deleteUser(id) {
         alert("Gagal menghapus pengguna");
     }
 };
+async function deleteKiosk(id) {
+    console.log(id);
+    try {
+        const res = await apiFetch(`/api/admin/kiosks/${id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error(`status ${res.status}`);
+        await loadKiosks();
+    } catch (err) {
+        console.error("Failed to delete kiosk", err);
+        alert("Gagal menghapus kios");
+    }
+}
 async function toggleBlock(kioskId, currentStatus) {
     const newStatus = currentStatus === "active" ? "blocked" : "active";
+    console.log(newStatus);
 
     await apiFetch(`/api/admin/kiosks/${kioskId}`, {
         method: "PUT",

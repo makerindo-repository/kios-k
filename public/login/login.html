@@ -4,19 +4,26 @@
     <head>
         <title>Login</title>
         <link rel="stylesheet" href="/login/login.css">
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+        <script src="/login/login.js" defer></script>
     </head>
     <body>
         <img src="../assets/logo.webp" class="logo">
         <div class="card">
             <h1>Login</h1>
             <form id="login-form">
-                <input type="text" name="username" placeholder="Masukkan Username Disini" required>
-                <input type="password" name="password" placeholder="Masukkan Password Disini" required>
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-envelope"></i>
+                    <input type="text" name="useremail" placeholder="Masukkan Username / Email Disini" required>
+                </div>
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-key"></i>
+                    <input type="password" name="password" placeholder="Masukkan Password Disini" required>
+                </div>
                 <button type="submit" class="button">Login</button>
             </form>
         </div>
         <div id="selection" class="selection card hidden">
         </div>
-        <script src="/login/login.js"></script>
     </body>
 </html>

@@ -2,10 +2,12 @@
 //constants and variables
 const pageContainer = document.getElementById("page-carousel");
 const mouContainer = document.getElementById("mou-carousel");
-const addPageModal = document.getElementById("add-page-modal");
-const addPageForm = document.getElementById("add-page-form");
-const addMouModal = document.getElementById("add-mou-modal");
-const addMouForm = document.getElementById("add-mou-form");
+const pageModal = document.getElementById("page-modal");
+const pageForm = document.getElementById("page-form");
+const welcomeModal = document.getElementById("welcome-modal")
+const welcomeForm = document.getElementById("welcome-form")
+const mouModal = document.getElementById("mou-modal");
+const mouForm = document.getElementById("mou-form");
 const urlParams = new URLSearchParams(window.location.search);
 let kioskId = urlParams.get("kiosk");
 
@@ -89,7 +91,7 @@ function renderCards(pages) {
         const text = page.description || page.desc || "";
         if (text) {
             const words = text.split(" ");
-            shortDesc = words.length > 20 ? words.slice(0, 19).join(" ") + "..." : text;
+            shortDesc = words.length > 15 ? words.slice(0, 14).join(" ") + "..." : text;
         }
         card.innerHTML = `
             <img src="/uploads/${imgSrc}">
@@ -97,8 +99,8 @@ function renderCards(pages) {
             ${page.page_type === "welcome" ? "" : `<p id="title"><b>${page.title}</b></p>`}
             <p id="desc">${shortDesc}</p>
             <div>
-                <button onclick="editPage('${page.id}')" class="button default for-card">Edit</button>
-                ${page.page_type === "welcome" ? "" : `<button onclick="deletePage('${page.id}', this.closest('.page-card'))" class="button alert for-card">Hapus</button>`}
+                <button onclick="${page.page_type === "welcome" ? "editWelcome" : "editPage"}('${page.id}')" class="button default for-card"><i class="fi fi-rr-edit"></i></button>
+                ${page.page_type === "welcome" ? "" : `<button onclick="deletePage('${page.id}', this.closest('.page-card'))" class="button alert for-card"><i class="fi fi-rr-trash"></i></button>`}
             </div>
         `;
 
@@ -144,8 +146,8 @@ function renderLogos(logos) {
         card.innerHTML = `
             <img src="/uploads/${imgSrc}">
             <div>
-                <button onclick="editMou('${logo.id}')" class="button default for-card">Edit</button>
-                <button onclick="deleteMou('${logo.id}', this.closest('.mou-card'))" class="button alert for-card">Hapus</button>
+                <button onclick="editMou('${logo.id}')" class="button default for-card"><i class="fi fi-rr-edit"></i></button>
+                <button onclick="deleteMou('${logo.id}', this.closest('.mou-card'))" class="button alert for-card"><i class="fi fi-rr-trash"></i></button>
             </div>
         `;
 
@@ -165,9 +167,9 @@ function renderLogos(logos) {
 
 //Create Update Delete for page
 async function createNewPage() {
-    addPageForm.reset();
-    addPageForm.elements["id"].value = "";
-    addPageModal.classList.remove("hidden")
+    pageForm.reset();
+    pageForm.elements["id"].value = "";
+    pageModal.classList.remove("hidden")
 }
 async function editPage(id) {
     if (!kioskId) return;
@@ -176,13 +178,13 @@ async function editPage(id) {
     try {
         const page = pages.find(p => p.id == id);
         if (!page) return alert("Halaman tidak ditemukan: 404");
-        addPageModal.classList.remove("hidden");
+        pageModal.classList.remove("hidden");
 
-        addPageForm.elements["id"].value = page.id;
-        addPageForm.elements["heading"].value = page.heading;
-        addPageForm.elements["title"].value = page.title;
-        addPageForm.elements["description"].value = page.description || page.desc || "";
-        addPageForm.elements["page_type"].value = page.page_type;
+        pageForm.elements["id"].value = page.id;
+        pageForm.elements["heading"].value = page.heading;
+        pageForm.elements["title"].value = page.title;
+        pageForm.elements["description"].value = page.description || page.desc || "";
+        pageForm.elements["page_type"].value = page.page_type;
     } catch(error) {
         console.error(error);
         alert("Gagal memuat halaman");
@@ -195,11 +197,11 @@ async function editWelcome(id) {
     try {
         const page = pages.find(p => p.id == id);
         if (!page) return alert("Halaman tidak ditemukan: 404");
-        addPageModal.classList.remove("hidden");
+        welcomeModal.classList.remove("hidden");
 
-        addPageForm.elements["id"].value = page.id;
-        addPageForm.elements["heading"].value = page.heading;
-        addPageForm.elements["description"].value = page.description || page.desc || "";
+        welcomeForm.elements["id"].value = page.id;
+        welcomeForm.elements["heading"].value = page.heading;
+        pageForm.elements["description"].value = page.description || page.desc || "";
     } catch(error) {
         console.error(error);
         alert("Gagal memuat halaman");
@@ -229,9 +231,9 @@ async function deletePage(id, cardElement) {
 
 //Create Update Delete for mou
 async function createNewMou() {
-    addMouForm.reset();
-    addMouForm.elements["id"].value = "";
-    addMouModal.classList.remove("hidden")
+    mouForm.reset();
+    mouForm.elements["id"].value = "";
+    mouModal.classList.remove("hidden")
 }
 async function editMou(id) {
     if (!kioskId) return;
@@ -240,9 +242,9 @@ async function editMou(id) {
     try {
         const logo = logos.find(l => l.id == id);
         if (!logo) return alert("Logo tidak ditemukan: 404");
-        addMouModal.classList.remove("hidden");
+        mouModal.classList.remove("hidden");
 
-        addMouForm.elements["id"].value = logo.id;
+        mouForm.elements["id"].value = logo.id;
     } catch(error) {
         console.error(error);
         alert("Gagal memuat mou");
@@ -267,11 +269,11 @@ async function deleteMou(id, cardElement) {
 }
 
 //form event listener or something something my tummy hurts
-addPageForm.addEventListener("submit", async e => {
+pageForm.addEventListener("submit", async e => {
     e.preventDefault();
 
-    const id = addPageForm.elements["id"].value;
-    const formData = new FormData(addPageForm);
+    const id = pageForm.elements["id"].value;
+    const formData = new FormData(pageForm);
     
     // Remove id from formData for POST requests
     if (!id) {
@@ -297,19 +299,19 @@ addPageForm.addEventListener("submit", async e => {
             return;
         }
 
-        addPageModal.classList.add("hidden");
-        addPageForm.reset();
+        pageModal.classList.add("hidden");
+        pageForm.reset();
         loadPages();
     } catch(error) {
         console.error("[owner form] fetch error:", error);
         alert("Gagal menyimpan halaman: " + error.message)
     }
 });
-addMouForm.addEventListener("submit", async e => {
+mouForm.addEventListener("submit", async e => {
     e.preventDefault();
 
-    const id = addMouForm.elements["id"].value;
-    const formData = new FormData(addMouForm);
+    const id = mouForm.elements["id"].value;
+    const formData = new FormData(mouForm);
     
     // Remove id from formData for POST requests
     if (!id) {
@@ -326,8 +328,8 @@ addMouForm.addEventListener("submit", async e => {
 
         if (!res.ok) throw new Error("Gagal menyimpan");
 
-        addMouModal.classList.add("hidden");
-        addMouForm.reset();
+        mouModal.classList.add("hidden");
+        mouForm.reset();
         loadLogos();
     } catch(error) {
         console.error(error);

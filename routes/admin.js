@@ -109,6 +109,14 @@ router.put("/kiosks/:id", async (req, res) => {
         res.status(500).json({ error: "Update failed" });
     }
 });
+router.delete("/kiosks/:id", async (req, res) => {
+    try {
+        await pool.query("DELETE FROM kiosks WHERE id = ?", [req.params.id]);
+        res.json({ success: true });
+    } catch(error) {
+        res.status(500).json({ error: error.message });
+    }
+})
 
 // ---------------- Users Routes ----------------
 router.get("/users", async (req, res) => {
@@ -120,7 +128,6 @@ router.get("/users", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
 // get specific user (optional - might be useful)
 router.get("/users/:id", async (req, res) => {
     try {
@@ -131,8 +138,6 @@ router.get("/users/:id", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
-// create new owner user
 router.post("/users", async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -149,8 +154,6 @@ router.post("/users", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
-// update existing user
 router.put("/users/:id", async (req, res) => {
     const { username, email, password } = req.body;
     const id = req.params.id;
@@ -181,8 +184,6 @@ router.put("/users/:id", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
-// delete user
 router.delete("/users/:id", async (req, res) => {
     try {
         await pool.query("DELETE FROM users WHERE id = ?", [req.params.id]);

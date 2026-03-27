@@ -8,14 +8,14 @@ const JWT_SECRET = process.env.JWT_SECRET || "himommy";
 
 // login endpoint: verify kiosk exists and the supplied credentials match
 router.post("/login", async (req, res) => {
-    const {username, password } = req.body;
-    if (!username || !password) {
-        return res.status(400).json({ error: "Username dan password dibutuhkan!" });
+    const {useremail, password } = req.body;
+    if (!useremail || !password) {
+        return res.status(400).json({ error: "Username / email dan password dibutuhkan!" });
     }
     try {
         const [rows] = await pool.query(
-            "SELECT id, password, role FROM users WHERE username = ?",
-            [username]
+            "SELECT id, password, role FROM users WHERE username = ? OR email = ?",
+            [useremail, useremail]
         );
         //Check if user exists or nah
         if (rows.length === 0) {

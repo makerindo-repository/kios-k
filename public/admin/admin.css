@@ -6,7 +6,7 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    background-color: #f7f7f7;
     scrollbar-width: none;
 }
 .large-container {
@@ -15,32 +15,81 @@ html, body {
 }
 .manage-container {
     text-align: center;
-    background-color: #d7d7d7;
+    background-color: #eaeaea;
     padding: 10px;
     flex: 1;
-    border-radius: 20px;
+    border-radius: 10px;
     margin: 20px 20px;
 }
 
+/*Stats*/
+#stat-active {
+    color: #107a23;
+}
+#stat-blocked {
+    color: #7a1010;
+}
+
 /*Tables*/
-.table {
-    border-color: #10507c;
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid #eaeaea;
+    margin: 20px 0;
+}
+.table-wrapper table {
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+.table-wrapper th {
+    background-color: #104f7a;
+    color: #f7f7f7;
+    padding: 10px 0px;
+    text-align: center;
+}
+.table-wrapper td {
+    text-align: center;
+    height: 10vh;
+    background-color: #dadada;
+}
+.table-wrapper tr:nth-child(even) td {
+    background-color: #cdcdcd;
 }
 .number {
-    min-width: 5%;
+    width: 5%;
+}
+.action {
+    width: 30%;
+}
+
+.table-wrapper th:first-child {
+    border-top-left-radius: 8px;
+}
+.table-wrapper th:last-child {
+    border-top-right-radius: 8px;
+}
+.table-wrapper tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+.table-wrapper tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
 }
 
 /*The part of buttons*/
 .buttons {
-    background-color: #10517c00;
+    background-color: #ffffff00;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 50px;
 }
 .button {
-    min-width: 5vw;
+    min-width: 2vw;
     min-height: 5vh;
     border-radius: 10px;
     border: 0px;
@@ -49,14 +98,22 @@ html, body {
 }
 .button:hover {
     opacity: 0.8;
+    cursor: pointer;
+}
+.button i {
+    font-size: 15px;
 }
 .default {
-    background-color: #10507c;
-    color: #d7d7d7;
+    background-color: #104f7a;
+    color: #f7f7f7;
 }
 .alert {
-    background-color: #a11515;
-    color: #d7d7d7;
+    background-color: #7a1010;
+    color: #f7f7f7;
+}
+.warning {
+    background-color: #717a10;
+    color: #f7f7f7;
 }
 
 /*The form modal, work for both content and MoU*/
@@ -66,7 +123,7 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5); /* semi-transparent overlay */
+    background-color: #0000008b;; /* semi-transparent overlay */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,10 +133,10 @@ html, body {
     display: none;
 }
 .modal-content {
-    background-color: white;
+    background-color: #f7f7f7;
     border-radius: 12px;
     padding: 30px 40px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 25px #0000008b;;
     width: 100%;
     max-width: 500px;
     position: relative;
@@ -92,21 +149,22 @@ html, body {
     margin-top: 20px;
     border: none;
     border-radius: 8px;
-    background-color: #10507c;
-    color: white;
+    background-color: #104f7a;
+    color: #f7f7f7;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 .submit-btn:hover {
     opacity: 0.85;
+    cursor: pointer;
 }
 .cancel-btn {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: #a11515;
-    color: white;
+    background: #7a1010;
+    color: #f7f7f7;
     border: none;
     border-radius: 50%;
     width: 30px;
@@ -115,6 +173,7 @@ html, body {
 }
 .cancel-btn:hover {
     opacity: 0.85;
+    cursor: pointer;
 }
 label {
     display: block;
@@ -140,6 +199,41 @@ select {
     resize: vertical;
 }
 
+/*Footer and more*/
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #104f7a;
+    min-height: 20vh;
+    color: #f7f7f7;
+}
+footer p {
+    font-size: 15px;
+}
+
+.socials {
+    margin: 15px;
+    display: flex;
+    gap: 40px;
+}
+
+.social {
+    background-color: #ffffff00;
+    border-width: 0;
+    padding: 0px;
+}
+.social i {
+    font-size: 30px;
+    color: #f7f7f7;
+}
+.social:hover {
+    opacity: 0.85;
+    cursor: pointer;
+}
+
+
 /*Forbidden page*/
 .forbidden {
     display:flex;
@@ -151,5 +245,5 @@ select {
     font-family:sans-serif;
 }
 .forbidden h1 {
-    font-size: 100px;
+    font-size: 50px;
 }
