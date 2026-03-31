@@ -74,7 +74,7 @@ header {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  color: #1f86c9;
+  color: #10507c;
   font-family: Arial, Helvetica, sans-serif;
   gap: 20px;
   padding-bottom: 10px;
@@ -131,7 +131,7 @@ main {
 .page p {
   font-size: 15px;
   font-family: Arial, Helvetica, sans-serif;
-  color: #1f86c9;
+  color: #10507c;
 }
 .content-template {
   display: flex;
@@ -169,7 +169,7 @@ main {
   max-width: 700px;
   border-radius: 10px;
   padding: 15px;
-  background-color: #1f86c9;
+  background-color: #10507c;
 }
 .description p {
   font-size: 17px;

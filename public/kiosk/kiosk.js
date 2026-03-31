@@ -122,27 +122,11 @@ function apiFetch(url, options = {}) {
     headers["Authorization"] = `Bearer ${token}`;
 
     return fetch(url, { ...options, headers }).then(async res => {
-
-        if (res.status === 401) {
-            showAccessDenied("Unauthenticated | 401");
-            throw new Error("401 Unauthorized");
-        }
-
         if (res.status === 403) {
-            showAccessDenied("Forbidden | 403");
-            throw new Error("403 Forbidden");
+          window.location.href("/login");
         }
-
         return res;
     });
-}
-function showAccessDenied(title) {
-    document.body.innerHTML = `
-        <div class="forbidden">
-            <h1>${title}</h1>
-            <button onclick="window.location.href='/login'" class="button">Login</button>
-        </div>
-    `;
 }
 
 // load contents for this kiosk and start the carousel

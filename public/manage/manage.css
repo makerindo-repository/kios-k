@@ -22,6 +22,15 @@ html, body {
     margin: 20px 20px;
 }
 
+/*header*/
+.header {
+    width: 100%;
+    color: #f7f7f7;
+    background-color: #104f7a;
+    padding: 0px 20px;
+    font-size: 15px;
+}
+
 /*Buttons*/
 .add-button {
     display: flex;                  
@@ -118,6 +127,15 @@ html, body {
 }
 .mou-card button {
     margin-top: 5px;
+}
+
+/*Decorums*/
+.mini-fields {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+    
 }
 
 /*The part of buttons*/

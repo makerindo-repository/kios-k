@@ -49,6 +49,25 @@ router.post("/kiosks", async (req, res) => {
                 JSON.stringify([])
             ]
         );
+
+        await conn.query(`
+            INSERT INTO decorations
+            (kiosk_id, top_left, top_right, bottom_left, bottom_right, side_deco, color_palette, page_interval, mou_option, kiosk_logo, text_content)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                kioskId,
+                "none",
+                "square",
+                "circle",
+                "none",
+                "techline",
+                "#10507c",
+                5,
+                1,
+                "",
+                ""
+            ]
+        );
         await conn.commit();
         res.status(201).json({ id: kioskId });
     } catch (error) {

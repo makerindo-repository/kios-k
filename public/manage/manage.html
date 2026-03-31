@@ -10,14 +10,78 @@
         <script src="/manage/manage.js" defer></script>
     </head>
     <body>
-        <div class="manage-container">
-            <h1 id="page-title">Daftar Halaman</h1>
+        <div class="header"> <!--Header-->
+            <h1>Manage <b>KIOS-K Makerindo</b> | Nama Pengguna</h1>
+        </div>
+        <div class="manage-container"> <!--Page list-->
+            <h1>Daftar Halaman</h1>
             <div id="page-carousel" class="page-carousel">
             </div>
         </div>
-        <div class="manage-container">
-            <h1 id="page-title">Daftar MoU</h1>
+        <div class="manage-container"> <!--Mou list-->
+            <h1>Daftar MoU</h1>
             <div id="mou-carousel" class="mou-carousel"></div>
+        </div>
+        <div class="manage-container"> <!--Setting / config-->
+            <h1>Pengaturan Display KIOS-K</h1>
+            <form id="deco-form">
+                <h2>Dekorasi Sisi</h2>
+                <div class="mini-fields">
+                    <label>Pojok Kiri Atas: <select name="tl">
+                        <option value="none">Kosong / Tidak Ada</option>
+                        <option value="square">Kotak</option>
+                        <option value="circle">Lingkaran</option>
+                        <option value="logo">Logo Usaha</option>
+                        <option value="text">Teks / Tulisan</option>
+                    </select></label>
+                    <label>Pojok Kanan Atas: <select name="tr">
+                        <option value="none">Kosong / Tidak Ada</option>
+                        <option value="square">Kotak</option>
+                        <option value="circle">Lingkaran</option>
+                        <option value="logo">Logo Usaha</option>
+                        <option value="text">Teks / Tulisan</option>                      
+                    </select></label>
+                    <label>Pojok Kiri Bawah: <select name="bl">
+                        <option value="none">Kosong / Tidak Ada</option>
+                        <option value="square">Kotak</option>
+                        <option value="circle">Lingkaran</option>
+                        <option value="logo">Logo Usaha</option>
+                        <option value="text">Teks / Tulisan</option>
+                    </select></label>
+                    <label>Pojok Kanan Bawah: <select name="br">
+                        <option value="none">Kosong / Tidak Ada</option>
+                        <option value="square">Kotak</option>
+                        <option value="circle">Lingkaran</option>
+                        <option value="logo">Logo Usaha</option>
+                        <option value="text">Teks / Tulisan</option>
+                    </select></label>                    
+                    <label>Sisi Kanan Kiri: <select name="sd">
+                        <option value="">Kosong / Tidak Ada</option>
+                        <option value="techline">Teknologi</option>
+                        <option value="arrow">Panah</option>
+                        <option value="utensils">Sendok & Garpu</option>
+                    </select></label>
+                </div>
+                <h2>Dekorasi Global</h2>
+                <div class="mini-fields">
+                    <label>Palet Warna Utama: <input type="color" name="cp"></label>
+                    <label>Waktu Tayang per Halaman (detik): <div>
+                        <label for="myRange"></label>
+                        <input name="pi" type="range" min="5" max="15" value="5" step="1" class="slider" id="myRange" oninput="this.nextElementSibling.value = this.value">
+                        <output>5</output>
+                    </div></label>
+                    <label>MoU: <select name="mou">
+                        <option value="1">Tampilkan</option>
+                        <option value="0">Sembunyikan</option>
+                    </select></label>
+                </div>
+                <h2>Dekorasi Opsional</h2>
+                <div class="mini-fields">
+                    <label>Logo Usaha: <input type="file" name="kl"></label>
+                    <label>Isi Teks / Tulisan: <input type="text" name="tc"></label>
+                </div>
+                <button type="submit" class="submit-btn">Ubah Tampilan Display KIOS-K</button>
+            </form>
         </div>
         <div class="manage-container buttons">
             <button class="button alert logout">Logout</button>

@@ -20,6 +20,9 @@ app.use("/api/admin", adminRouter);
 app.use("/api/owner", ownerRouter);
 
 // serve kiosk UI with kiosk id in URL: /kiosk/:kioskId
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'hero', 'hero.html'));
+})
 app.get('/kiosk/:kioskId', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'kiosk', 'kiosk.html'));
 });

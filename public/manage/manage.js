@@ -8,6 +8,7 @@ const welcomeModal = document.getElementById("welcome-modal")
 const welcomeForm = document.getElementById("welcome-form")
 const mouModal = document.getElementById("mou-modal");
 const mouForm = document.getElementById("mou-form");
+const decoForm = document.getElementById("deco-form");
 const urlParams = new URLSearchParams(window.location.search);
 let kioskId = urlParams.get("kiosk");
 
@@ -164,6 +165,36 @@ function renderLogos(logos) {
 
     currentIndex = 0;
 }
+//Load decoration
+async function loadDecos() {
+    if (!kioskId) {
+        console.warn("No kiosk id supplied, skipping decorations");
+        return;
+    }
+    const res = await apiFetch(`/api/owner/kiosk/${kioskId}/decorations`);
+    console.log(res.status, res.ok);
+    const decos = await res.json();
+    console.log("Decos response: ", decos, "Type: ", Array.isArray(decos));
+    if (!Array.isArray(decos)) {
+        console.error("Decos is not an array: ", decos);
+        return;
+    }
+
+    if (!decos.length) {
+        return;
+    }
+
+    const deco = decos[0];
+    decoForm.elements["tl"].value = deco.top_left || "";
+    decoForm.elements["tr"].value = deco.top_right || "";
+    decoForm.elements["bl"].value = deco.bottom_left || "";
+    decoForm.elements["br"].value = deco.bottom_right || "";
+    decoForm.elements["sd"].value = deco.side_deco || "techline";
+    decoForm.elements["cp"].value = deco.color_palette || "#fffff";
+    decoForm.elements["ip"].value = deco.page_interval || "5";
+    decoForm.elements["mou"].value = deco.mou_option != null ? deco.mou_option : "1";
+}
+
 
 //Create Update Delete for page
 async function createNewPage() {
@@ -336,7 +367,6 @@ mouForm.addEventListener("submit", async e => {
         alert("Gagal menyimpan MoU")
     }
 });
-
 welcomeForm.addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -367,6 +397,37 @@ welcomeForm.addEventListener("submit", async e => {
         alert("Gagal menyimpan halaman welcome");
     }
 });
+decoForm.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const formData = new FormData(decoForm);
+    const body = Object.fromEntries(formData.entries());
+
+    const method = "PUT";
+    const url = `/api/owner/kiosk/${kioskId}/decorations`;
+
+    try {
+        const res = await apiFetch(url, {
+            method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            alert("Gagal menyimpan dekorasi: " + (err.error || res.statusText));
+            return;
+        }
+        alert("Berhasil mengubah tampilan!");
+        loadDecos();
+
+    } catch (error) {
+        console.error(error);
+        alert("Gagal menyimpan dekorasi: " + error.message);
+    }
+});
 document.querySelectorAll(".cancel-btn").forEach(btn => {
     btn.addEventListener("click", e => {
         const modal = e.target.closest(".modal");
@@ -393,3 +454,4 @@ document.addEventListener("keydown", function(e) {
 //call the whole 300 lines of code and logos
 loadPages();
 loadLogos();
+loadDecos();

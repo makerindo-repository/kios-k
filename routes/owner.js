@@ -1,4 +1,4 @@
-// owner.js
+//Song for this file: 
 const express = require("express");
 const pool = require("../db");
 const path = require("path");
@@ -10,11 +10,11 @@ const { notifyDisplay } = require("../websocket");
 const router = express.Router();
 const upload = multer({ dest: path.join(__dirname, "..", "public", "uploads") });
 
-// --- Enforce authentication and owner role for all routes ---
+//need authenticate and balls
 router.use(authenticate);
 router.use(requireOwner);
 
-// --- Middleware: authenticate & verify kiosk ownership ---
+//middleware
 router.use("/kiosk/:kioskId", async (req, res, next) => {
     const { kioskId } = req.params;
     const { userId, name } = req.user;
@@ -29,7 +29,7 @@ router.use("/kiosk/:kioskId", async (req, res, next) => {
     next();
 });
 
-// ---------------- Contents Routes ----------------
+//contents routes
 router.get("/kiosk/:kioskId/contents", async (req, res) => {
     const { kioskId } = req.params;
     const [contents] = await pool.query("SELECT * FROM contents WHERE kiosk_id = ?", [kioskId]);
@@ -79,7 +79,7 @@ router.delete("/kiosk/:kioskId/contents/:id", async (req, res) => {
 });
 
 
-// ---------------- MoU Routes ----------------
+//mou routes
 router.get("/kiosk/:kioskId/mous", async (req, res) => {
     const { kioskId } = req.params;
     const [rows] = await pool.query("SELECT * FROM mous WHERE kiosk_id = ?", [kioskId]);
@@ -107,7 +107,55 @@ router.delete("/kiosk/:kioskId/mous/:id", async (req, res) => {
     res.json({ success: true });
 });
 
+//decoration routes
+router.get("/kiosk/:kioskId/decorations", async (req, res) => {
+    const { kioskId } = req.params;
+    const [decos] = await pool.query("SELECT * FROM decorations WHERE kiosk_id = ?", [kioskId]);
+    res.json(decos);
+})
+router.put("/kiosk/:kioskId/decorations", async (req, res) => {
+    const { kioskId } = req.params;
+    const { tl = "", tr = "", bl = "", br = "", sd = "", cp = "", pi = "", mou = "1", kl = "", tc = ""  } = req.body;
+    const [existing] = await pool.query("SELECT id FROM decorations WHERE kiosk_id = ?", [kioskId]);
 
+    if (existing.length > 0) {
+        await pool.query(`UPDATE decorations SET
+            top_left = ?,
+            top_right = ?,
+            bottom_left = ?,
+            bottom_right = ?,
+            side_deco = ?,
+            color_palette = ?,
+            page_interval = ?,
+            mou_option = ?,
+            kiosk_logo = ?,
+            text_content = ?
+            WHERE kiosk_id = ?`,
+            [tl, tr, bl, br, sd, cp, pi, mou, kl, tc, kioskId]
+        );
+    } else {
+        await pool.query(`INSERT INTO decorations (
+            kiosk_id,
+            top_left,
+            top_right,
+            bottom_left,
+            bottom_right,
+            side_deco,
+            color_palette,
+            page_interval,
+            mou_option,
+            kiosk_logo,
+            text_content
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [kioskId, tl, tr, bl, br, sd, cp, pi, mou, kl, tc]
+        );
+    }
+
+    notifyDisplay(kioskId);
+    return res.status(200).json({ success: true });
+});
+
+//upload location
 router.put("/kiosk/:kioskId/location", async (req, res) => {
     const { kioskId } = req.params;
     const { latitude, longitude } = req.body;
