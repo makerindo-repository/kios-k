@@ -113,41 +113,33 @@ router.get("/kiosk/:kioskId/decorations", async (req, res) => {
     const [decos] = await pool.query("SELECT * FROM decorations WHERE kiosk_id = ?", [kioskId]);
     res.json(decos);
 })
-router.put("/kiosk/:kioskId/decorations", async (req, res) => {
+router.put("/kiosk/:kioskId/decorations", upload.single("kl"), async (req, res) => {
     const { kioskId } = req.params;
-    const { tl = "", tr = "", bl = "", br = "", sd = "", cp = "", pi = "", mou = "1", kl = "", tc = ""  } = req.body;
-    const [existing] = await pool.query("SELECT id FROM decorations WHERE kiosk_id = ?", [kioskId]);
+    const { cp = "", pi = "", mou = "1", tc = "" } = req.body;
+    const kioskLogo = req.file ? req.file.filename : null;
+    const [existing] = await pool.query("SELECT id, kiosk_logo FROM decorations WHERE kiosk_id = ?", [kioskId]);
 
     if (existing.length > 0) {
+        const currentLogo = existing[0].kiosk_logo;
         await pool.query(`UPDATE decorations SET
-            top_left = ?,
-            top_right = ?,
-            bottom_left = ?,
-            bottom_right = ?,
-            side_deco = ?,
             color_palette = ?,
             page_interval = ?,
             mou_option = ?,
             kiosk_logo = ?,
             text_content = ?
             WHERE kiosk_id = ?`,
-            [tl, tr, bl, br, sd, cp, pi, mou, kl, tc, kioskId]
+            [cp, pi, mou, kioskLogo || currentLogo, tc, kioskId]
         );
     } else {
         await pool.query(`INSERT INTO decorations (
             kiosk_id,
-            top_left,
-            top_right,
-            bottom_left,
-            bottom_right,
-            side_deco,
             color_palette,
             page_interval,
             mou_option,
             kiosk_logo,
             text_content
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [kioskId, tl, tr, bl, br, sd, cp, pi, mou, kl, tc]
+        ) VALUES (?, ?, ?, ?, ?, ?)`,
+            [kioskId, cp, pi, mou, kioskLogo, tc]
         );
     }
 

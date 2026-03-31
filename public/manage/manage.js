@@ -185,14 +185,10 @@ async function loadDecos() {
     }
 
     const deco = decos[0];
-    decoForm.elements["tl"].value = deco.top_left || "";
-    decoForm.elements["tr"].value = deco.top_right || "";
-    decoForm.elements["bl"].value = deco.bottom_left || "";
-    decoForm.elements["br"].value = deco.bottom_right || "";
-    decoForm.elements["sd"].value = deco.side_deco || "techline";
-    decoForm.elements["cp"].value = deco.color_palette || "#fffff";
+    decoForm.elements["cp"].value = deco.color_palette || "#10507c";
     decoForm.elements["ip"].value = deco.page_interval || "5";
     decoForm.elements["mou"].value = deco.mou_option != null ? deco.mou_option : "1";
+    decoForm.elements["tc"].value = deco.text_content || "";
 }
 
 
@@ -401,7 +397,6 @@ decoForm.addEventListener("submit", async e => {
     e.preventDefault();
 
     const formData = new FormData(decoForm);
-    const body = Object.fromEntries(formData.entries());
 
     const method = "PUT";
     const url = `/api/owner/kiosk/${kioskId}/decorations`;
@@ -409,10 +404,7 @@ decoForm.addEventListener("submit", async e => {
     try {
         const res = await apiFetch(url, {
             method,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body)
+            body: formData
         });
 
         if (!res.ok) {

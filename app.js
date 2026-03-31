@@ -14,7 +14,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 const ownerRouter = require("./routes/owner");
 const loginRouter = require("./routes/login");
 const adminRouter = require("./routes/admin");
+const kioskRouter = require("./routes/kiosk");
 
+app.use("/api", kioskRouter);
 app.use("/api", loginRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/owner", ownerRouter);

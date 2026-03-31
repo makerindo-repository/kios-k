@@ -5,8 +5,9 @@ let pageData = [];
 let currentIndex = 0;
 let pageInterval = null;
 let carouselInterval = null;
+let pageIntervalMs = 7000;
 
-const PAGE_INTERVAL = 7000; // how long each page stays visible
+const PAGE_INTERVAL = 7000; // fallback page duration in milliseconds
 const CAROUSEL_INTERVAL = 2000; // fallback carousel speed
 const container = document.getElementById('page-container');
 
@@ -65,7 +66,6 @@ function updateClock() {
   else {
     message.textContent = "Selamat Malam!"
   }
-  message.style.backgroundColor = "#10507c"
 }
 function updateLocation() {
   const kioskId = new URLSearchParams(window.location.search).get("kiosk") || window.location.pathname.split("/")[2];
@@ -119,14 +119,58 @@ function apiFetch(url, options = {}) {
     const token = localStorage.getItem("token");
 
     const headers = options.headers || {};
-    headers["Authorization"] = `Bearer ${token}`;
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
 
     return fetch(url, { ...options, headers }).then(async res => {
         if (res.status === 403) {
-          window.location.href("/login");
+          window.location.href = "/login";
         }
         return res;
     });
+}
+
+async function loadDecorations(kioskId) {
+  try {
+    const res = await apiFetch(`/api/kiosk/${kioskId}/decorations`);
+    if (!res.ok) {
+      console.warn("Failed to load decorations", res.status);
+      return;
+    }
+    const decos = await res.json();
+    if (!Array.isArray(decos) || !decos.length) return;
+
+    applyDecorations(decos[0]);
+  } catch (err) {
+    console.error("Error loading decorations:", err);
+  }
+}
+
+function applyDecorations(deco) {
+  if (!deco) return;
+
+  const primaryColor = deco.color_palette || "#10507c";
+  document.documentElement.style.setProperty("--primary-color", primaryColor);
+  if (deco.kiosk_logo) {
+    const logoContainer = document.querySelector(".logo");
+    logoContainer.innerHTML = `<img src="/uploads/${deco.kiosk_logo}" alt="Logo">`;
+    console.log("Tunjukkan: ", deco.kiosk_logo);
+  }
+  if (deco.text_content) {
+    const message = document.getElementById("message");
+    message.textContent = deco.text_content;
+  }
+  if (deco.page_interval) {
+    const parsed = Number(deco.page_interval);
+    if (!Number.isNaN(parsed) && parsed > 0) {
+      pageIntervalMs = parsed * 1000;
+    }
+  }
+  const mouContainer = document.querySelector(".mou");
+  if (mouContainer) {
+    mouContainer.style.display = deco.mou_option === "0" || deco.mou_option === 0 ? "none" : "block";
+  }
 }
 
 // load contents for this kiosk and start the carousel
@@ -154,20 +198,30 @@ async function loadContents() {
 
   try {
     console.log("[kiosk] loading contents for kioskId=", kioskId);
-    const res = await apiFetch(`/api/owner/kiosk/${kioskId}/contents`);
+    const res = await apiFetch(`/api/kiosk/${kioskId}/contents`);
     if (!res.ok) {
       console.error("Failed to load contents", res.status);
       return;
     }
     const pages = await res.json();
     console.log("[kiosk] pages returned:", pages);
-    pageData = pages;
+    pageData = Array.isArray(pages) ? pages : [];
+    if (!pageData.length) {
+      container.innerHTML = `
+        <section class="page active">
+          <h1>Tidak ada konten</h1>
+          <p>Konten kiosk belum tersedia.</p>
+        </section>
+      `;
+      return;
+    }
+
     currentIndex = 0;
     showPage(currentIndex);
     pageInterval = setInterval(() => {
       currentIndex = (currentIndex + 1) % pageData.length;
       showPage(currentIndex);
-    }, PAGE_INTERVAL);
+    }, pageIntervalMs);
   } catch (err) {
     console.error("Error fetching contents:", err);
   }
@@ -324,7 +378,9 @@ document.addEventListener("DOMContentLoaded", () => {
     startWebSocket(kioskId);
   }
 
-  loadContents();
+  loadDecorations(kioskId).then(() => {
+    loadContents();
+  });
   loadMoUs();
   updateLocation();
   setInterval(updateLocation, 60000);
