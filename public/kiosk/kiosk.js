@@ -6,7 +6,6 @@ let currentIndex = 0;
 let pageInterval = null;
 let carouselInterval = null;
 let pageIntervalMs = 7000;
-let side_deco = "";
 
 const PAGE_INTERVAL = 7000; // fallback page duration in milliseconds
 const CAROUSEL_INTERVAL = 2000; // fallback carousel speed
@@ -153,6 +152,7 @@ async function loadDecorations(kioskId) {
     console.error("Error loading decorations:", err);
   }
 }
+
 function applyDecorations(deco) {
   if (!deco) return;
 
@@ -172,9 +172,6 @@ function applyDecorations(deco) {
     if (!Number.isNaN(parsed) && parsed > 0) {
       pageIntervalMs = parsed * 1000;
     }
-  }
-  if (deco.side_deco) {
-    side_deco = deco.side_deco
   }
   const mouContainer = document.querySelector(".mou");
   if (mouContainer) {
@@ -235,6 +232,7 @@ async function loadContents() {
     console.error("Error fetching contents:", err);
   }
 }
+
 // helpers for photos parsing (shared by renderers)
 function parsePhotosField(val) {
   if (!val) return [];
@@ -250,6 +248,7 @@ function parsePhotosField(val) {
   }
   return [];
 }
+
 // display a specific page, handle multi-image carousel
 function showPage(index) {
   const page = pageData[index];
@@ -287,9 +286,9 @@ function renderSinglePage(page) {
     <section class="page active">
       <h2>${page.heading}</h2>
       <div class="content-template">
-        <img src="/assets/${side_deco}.png" id="leftside">
+        <img src="/assets/techline.png" id="lefttech">
         <img src="/uploads/${photo}" alt="" class="single-image">
-        <img src="/assets/${side_deco}.png" id="rightside">
+        <img src="/assets/techline.png" id="righttech">
       </div>
       <h1>${page.title}</h1>
       <div class="description"><p>${page.description || page.desc || ""}</p></div>
@@ -303,9 +302,9 @@ function renderMultiPage(page) {
     <section class="page active">
       <h2>${page.heading}</h2>
       <div class="content-template">
-        <img src="/assets/${side_deco}.png" id="lefttech">
+        <img src="/assets/techline.png" id="lefttech">
         <div class="carousel">${photos.map((img, i) => `<img src="/uploads/${img}" class="carousel-image ${i === 0 ? "visible" : ""}">`).join("")}</div>
-        <img src="/assets/${side_deco}.png" id="righttech">
+        <img src="/assets/techline.png" id="righttech">
       </div>
       <h1>${page.title}</h1>
       <div class="description"><p>${page.description || page.desc || ""}</p></div>
@@ -321,9 +320,9 @@ function renderWelcomePage(page) {
     <section class="page active">
       <h2>${page.heading}</h2>
       <div class="content-template">
-        <img src="/assets/${side_deco}.png" id="lefttech">
+        <img src="/assets/techline.png" id="lefttech">
         <img src="/uploads/${photo}" alt="" class="single-image" id="logo">
-        <img src="/assets/${side_deco}.png" id="righttech">
+        <img src="/assets/techline.png" id="righttech">
       </div>
       <div class="description"><p>${page.description || page.desc || ""}</p></div>
     </section>

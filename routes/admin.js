@@ -52,14 +52,13 @@ router.post("/kiosks", async (req, res) => {
 
         await conn.query(`
             INSERT INTO decorations
-            (kiosk_id, color_palette, page_interval, mou_option, side_deco, kiosk_logo, text_content)
-            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            (kiosk_id, color_palette, page_interval, mou_option, kiosk_logo, text_content)
+            VALUES (?, ?, ?, ?, ?, ?)`,
             [
                 kioskId,
                 "#10507c",
                 5,
                 1,
-                "techline",
                 "",
                 ""
             ]

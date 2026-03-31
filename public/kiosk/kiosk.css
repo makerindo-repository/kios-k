@@ -50,19 +50,17 @@ header {
     justify-content: center;
     align-items: center;
     padding-top: 60px;
-    z-index: 2;
 }
 .square {
   opacity: 1;
   position: absolute;
-  width: clamp(140px, 18vw, 220px);
-  height: clamp(60px, 9vw, 110px);
+  width: 300px;
+  height: 100px;
   background-color: var(--primary-color);
   border-radius: 10px;
-  top: 20px;
-  right: -12vw;
-  animation: move 5s ease-in-out infinite alternate;
-  z-index: 1;
+  top: 0px;
+  right: -150px;
+  animation: move 5s ease-in-out infinite alternate
 }
 .logo {
   position: absolute;
@@ -71,7 +69,7 @@ header {
   z-index: 10;
 }
 .logo img {
-  width: 25vw;
+  width: 10vw;
   height: auto;
 }
 .clock-container {
@@ -111,7 +109,6 @@ main {
   justify-content: center;
   align-items: center;
   transition: opacity 0.5s ease-in-out;
-  z-index: 2;
 }
 .fade-out {
     opacity: 0;
@@ -183,11 +180,11 @@ main {
   color: #ffffff;
   text-align: center;
 }
-#leftside {
-  width: 20px;
+#lefttech {
+  width: 500px;
 }
-#rightside {
-  width: 20px;
+#righttech {
+  width: 500px;
   transform: scaleX(-1);
 }
 #logo {
@@ -221,11 +218,8 @@ main {
 }
 
 /*Footer and all of their children*/
-footer {
-  position: relative;
-  z-index: 2;
-}
 #slogan {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   position: absolute;
   bottom: 120px;
   left: 180px;
@@ -268,14 +262,13 @@ footer {
 .circle {
   opacity: 1;
   position: absolute;
-  width: clamp(140px, 18vw, 200px);
-  height: clamp(90px, 11vw, 130px);
+  width: 300px;
+  height: 120px;
   background-color: var(--primary-color);
   border-radius: 50%;
-  bottom: 20px;
-  left: -12vw;
-  animation: move 5s ease-in-out infinite alternate;
-  z-index: 1;
+  bottom: 0px;
+  left: -100px;
+  animation: move 5s ease-in-out infinite alternate
 }
 .bottom-blue {
   position: absolute;
