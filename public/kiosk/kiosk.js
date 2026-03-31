@@ -174,7 +174,7 @@ function applyDecorations(deco) {
     }
   }
   if (deco.side_deco) {
-    side_deco = deco.side_deco !== "none" ? "none" : deco.side_deco;
+    side_deco = deco.side_deco
   }
   const mouContainer = document.querySelector(".mou");
   if (mouContainer) {

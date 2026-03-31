@@ -50,17 +50,19 @@ header {
     justify-content: center;
     align-items: center;
     padding-top: 60px;
+    z-index: 2;
 }
 .square {
   opacity: 1;
   position: absolute;
-  width: 300px;
-  height: 100px;
+  width: clamp(140px, 18vw, 220px);
+  height: clamp(60px, 9vw, 110px);
   background-color: var(--primary-color);
   border-radius: 10px;
-  top: 0px;
-  right: -150px;
-  animation: move 5s ease-in-out infinite alternate
+  top: 20px;
+  right: -12vw;
+  animation: move 5s ease-in-out infinite alternate;
+  z-index: 1;
 }
 .logo {
   position: absolute;
@@ -109,6 +111,7 @@ main {
   justify-content: center;
   align-items: center;
   transition: opacity 0.5s ease-in-out;
+  z-index: 2;
 }
 .fade-out {
     opacity: 0;
@@ -218,6 +221,10 @@ main {
 }
 
 /*Footer and all of their children*/
+footer {
+  position: relative;
+  z-index: 2;
+}
 #slogan {
   position: absolute;
   bottom: 120px;
@@ -261,13 +268,14 @@ main {
 .circle {
   opacity: 1;
   position: absolute;
-  width: 300px;
-  height: 120px;
+  width: clamp(140px, 18vw, 200px);
+  height: clamp(90px, 11vw, 130px);
   background-color: var(--primary-color);
   border-radius: 50%;
-  bottom: 0px;
-  left: -100px;
-  animation: move 5s ease-in-out infinite alternate
+  bottom: 20px;
+  left: -12vw;
+  animation: move 5s ease-in-out infinite alternate;
+  z-index: 1;
 }
 .bottom-blue {
   position: absolute;
