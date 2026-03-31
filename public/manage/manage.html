@@ -11,7 +11,7 @@
     </head>
     <body>
         <div class="header"> <!--Header-->
-            <h1>Manage <b>KIOS-K Makerindo</b> | Nama Pengguna</h1>
+            <h1>Manage <b id="kiosk-name">KIOS-K Makerindo</b> | <span id="owner-name">Nama Pengguna</span></h1>
         </div>
         <div class="manage-container"> <!--Page list-->
             <h1>Daftar Halaman</h1>
@@ -36,6 +36,12 @@
                     <label>MoU: <select name="mou">
                         <option value="1">Tampilkan</option>
                         <option value="0">Sembunyikan</option>
+                    </select></label>
+                    <label>Pola Sisi Samping: <select name="sd">
+                        <option value="none">Kosong / Tidak Ada</option>
+                        <option value="techline">Teknologi</option>
+                        <option value="arrows">Panah</option>
+                        <option value="utensils">Sendok dan Garpu</option>
                     </select></label>
                 </div>
                 <h2>Dekorasi Opsional</h2>

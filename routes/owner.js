@@ -36,6 +36,19 @@ router.get("/kiosk/:kioskId/contents", async (req, res) => {
     res.json(contents);
 });
 
+router.get("/kiosk/:kioskId/info", async (req, res) => {
+    const { kioskId } = req.params;
+    const [rows] = await pool.query(
+        `SELECT k.name AS kioskName, u.username AS ownerName
+         FROM kiosks k
+         LEFT JOIN users u ON k.owner_id = u.id
+         WHERE k.id = ?`,
+        [kioskId]
+    );
+    if (!rows.length) return res.status(404).json({ error: "Kiosk tidak ditemukan" });
+    res.json(rows[0]);
+});
+
 router.post("/kiosk/:kioskId/contents", upload.array("photos", 5), async (req, res) => {
     const { kioskId } = req.params;
     const files = req.files.map(f => f.filename);
@@ -115,31 +128,33 @@ router.get("/kiosk/:kioskId/decorations", async (req, res) => {
 })
 router.put("/kiosk/:kioskId/decorations", upload.single("kl"), async (req, res) => {
     const { kioskId } = req.params;
-    const { cp = "", pi = "", mou = "1", tc = "" } = req.body;
+    const { sd = "", cp = "", pi = "", mou = "1", tc = "" } = req.body;
     const kioskLogo = req.file ? req.file.filename : null;
     const [existing] = await pool.query("SELECT id, kiosk_logo FROM decorations WHERE kiosk_id = ?", [kioskId]);
 
     if (existing.length > 0) {
         const currentLogo = existing[0].kiosk_logo;
         await pool.query(`UPDATE decorations SET
+            side_deco = ?,
             color_palette = ?,
             page_interval = ?,
             mou_option = ?,
             kiosk_logo = ?,
             text_content = ?
             WHERE kiosk_id = ?`,
-            [cp, pi, mou, kioskLogo || currentLogo, tc, kioskId]
+            [sd, cp, pi, mou, kioskLogo || currentLogo, tc, kioskId]
         );
     } else {
         await pool.query(`INSERT INTO decorations (
             kiosk_id,
+            side_deco,
             color_palette,
             page_interval,
             mou_option,
             kiosk_logo,
             text_content
-        ) VALUES (?, ?, ?, ?, ?, ?)`,
-            [kioskId, cp, pi, mou, kioskLogo, tc]
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [kioskId, sd, cp, pi, mou, kioskLogo, tc]
         );
     }
 

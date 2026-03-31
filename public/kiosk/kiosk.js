@@ -6,6 +6,7 @@ let currentIndex = 0;
 let pageInterval = null;
 let carouselInterval = null;
 let pageIntervalMs = 7000;
+let side_deco = "";
 
 const PAGE_INTERVAL = 7000; // fallback page duration in milliseconds
 const CAROUSEL_INTERVAL = 2000; // fallback carousel speed
@@ -67,6 +68,7 @@ function updateClock() {
     message.textContent = "Selamat Malam!"
   }
 }
+
 function updateLocation() {
   const kioskId = new URLSearchParams(window.location.search).get("kiosk") || window.location.pathname.split("/")[2];
   if (!navigator.geolocation || !kioskId) return;
@@ -89,9 +91,13 @@ function updateLocation() {
   });
 }
 function startWebSocket(kioskId) {
-  const ws = new WebSocket(`ws://${location.host}`);
+  const scheme = location.protocol === "https:" ? "wss" : "ws";
+  const ws = new WebSocket(`${scheme}://${location.host}`);
   ws.onopen = () => {
     console.log("[WS] connected");
+  };
+  ws.onerror = (err) => {
+    console.error("[WS] error", err);
   };
   ws.onmessage = (event) => {
     let msg;
@@ -106,6 +112,7 @@ function startWebSocket(kioskId) {
 
       loadContents();
       loadMoUs();
+      loadDecorations();
     }
   };
 
@@ -146,7 +153,6 @@ async function loadDecorations(kioskId) {
     console.error("Error loading decorations:", err);
   }
 }
-
 function applyDecorations(deco) {
   if (!deco) return;
 
@@ -158,7 +164,7 @@ function applyDecorations(deco) {
     console.log("Tunjukkan: ", deco.kiosk_logo);
   }
   if (deco.text_content) {
-    const message = document.getElementById("message");
+    const message = document.getElementById("slogan");
     message.textContent = deco.text_content;
   }
   if (deco.page_interval) {
@@ -166,6 +172,9 @@ function applyDecorations(deco) {
     if (!Number.isNaN(parsed) && parsed > 0) {
       pageIntervalMs = parsed * 1000;
     }
+  }
+  if (deco.side_deco) {
+    side_deco = deco.side_deco;
   }
   const mouContainer = document.querySelector(".mou");
   if (mouContainer) {
@@ -226,7 +235,6 @@ async function loadContents() {
     console.error("Error fetching contents:", err);
   }
 }
-
 // helpers for photos parsing (shared by renderers)
 function parsePhotosField(val) {
   if (!val) return [];
@@ -242,7 +250,6 @@ function parsePhotosField(val) {
   }
   return [];
 }
-
 // display a specific page, handle multi-image carousel
 function showPage(index) {
   const page = pageData[index];
@@ -280,9 +287,9 @@ function renderSinglePage(page) {
     <section class="page active">
       <h2>${page.heading}</h2>
       <div class="content-template">
-        <img src="/assets/techline.webp" id="lefttech">
+        <img src="/assets/${side_deco}.png" id="leftside">
         <img src="/uploads/${photo}" alt="" class="single-image">
-        <img src="/assets/techline.webp" id="righttech">
+        <img src="/assets/${side_deco}.png" id="rightside">
       </div>
       <h1>${page.title}</h1>
       <div class="description"><p>${page.description || page.desc || ""}</p></div>
@@ -296,9 +303,9 @@ function renderMultiPage(page) {
     <section class="page active">
       <h2>${page.heading}</h2>
       <div class="content-template">
-        <img src="/assets/techline.webp" id="lefttech">
+        <img src="/assets/${side_deco}.png" id="lefttech">
         <div class="carousel">${photos.map((img, i) => `<img src="/uploads/${img}" class="carousel-image ${i === 0 ? "visible" : ""}">`).join("")}</div>
-        <img src="/assets/techline.webp" id="righttech">
+        <img src="/assets/${side_deco}.png" id="righttech">
       </div>
       <h1>${page.title}</h1>
       <div class="description"><p>${page.description || page.desc || ""}</p></div>
@@ -314,9 +321,9 @@ function renderWelcomePage(page) {
     <section class="page active">
       <h2>${page.heading}</h2>
       <div class="content-template">
-        <img src="/assets/techline.webp" id="lefttech">
+        <img src="/assets/${side_deco}.png" id="lefttech">
         <img src="/uploads/${photo}" alt="" class="single-image" id="logo">
-        <img src="/assets/techline.webp" id="righttech">
+        <img src="/assets/${side_deco}.png" id="righttech">
       </div>
       <div class="description"><p>${page.description || page.desc || ""}</p></div>
     </section>

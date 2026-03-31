@@ -9,6 +9,8 @@ const welcomeForm = document.getElementById("welcome-form")
 const mouModal = document.getElementById("mou-modal");
 const mouForm = document.getElementById("mou-form");
 const decoForm = document.getElementById("deco-form");
+const kioskNameEl = document.getElementById("kiosk-name");
+const ownerNameEl = document.getElementById("owner-name");
 const urlParams = new URLSearchParams(window.location.search);
 let kioskId = urlParams.get("kiosk");
 
@@ -118,6 +120,26 @@ function renderCards(pages) {
 
     currentIndex = 0;
 }
+//load and render kiosk header info
+async function loadHeaderInfo() {
+    if (!kioskId) {
+        console.warn("owner: no kiosk id supplied, skipping header info");
+        return;
+    }
+    try {
+        const res = await apiFetch(`/api/owner/kiosk/${kioskId}/info`);
+        if (!res.ok) {
+            console.warn("Failed to load kiosk info", res.status);
+            return;
+        }
+        const info = await res.json();
+        if (kioskNameEl && info.kioskName) kioskNameEl.textContent = info.kioskName;
+        if (ownerNameEl && info.ownerName) ownerNameEl.textContent = info.ownerName;
+    } catch (error) {
+        console.error("Failed to load header info:", error);
+    }
+}
+
 //load and render mous
 async function loadLogos() {
     if (!kioskId) {
@@ -189,6 +211,7 @@ async function loadDecos() {
     decoForm.elements["ip"].value = deco.page_interval || "5";
     decoForm.elements["mou"].value = deco.mou_option != null ? deco.mou_option : "1";
     decoForm.elements["tc"].value = deco.text_content || "";
+    decoForm.elements["sd"].value = deco.side_deco || "techline";
 }
 
 
@@ -447,3 +470,4 @@ document.addEventListener("keydown", function(e) {
 loadPages();
 loadLogos();
 loadDecos();
+loadHeaderInfo();
