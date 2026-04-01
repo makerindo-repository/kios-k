@@ -1,3 +1,4 @@
+//Song for this file: AKAGE by Smilybruh
 const express = require("express");
 const pool = require("../db");
 const router = express.Router();
@@ -6,11 +7,11 @@ const { requireAdmin } = require("../middleware/roles");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-// --- Enforce authentication and admin role for all routes ---
+//enforce auth
 router.use(authenticate);
 router.use(requireAdmin);
 
-// ---------------- Kiosks Routes ----------------
+//kiosks' routes
 router.get("/kiosks", async (req, res) => {
     try {
         const [rows] = await pool.query(`SELECT k.id, k.name, k.status, k.latitude, k.longitude, u.username AS owner FROM kiosks k LEFT JOIN users u ON k.owner_id = u.id`);
@@ -132,7 +133,7 @@ router.delete("/kiosks/:id", async (req, res) => {
     }
 })
 
-// ---------------- Users Routes ----------------
+//user's route
 router.get("/users", async (req, res) => {
     try {
         // include id so caller can edit/delete

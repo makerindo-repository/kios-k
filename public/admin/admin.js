@@ -1,3 +1,4 @@
+//Song for this file: MAD TALE by mimizu
 const kioskModal = document.getElementById("kiosk-modal");
 const kioskForm = document.getElementById("kiosk-form");
 const userModal = document.getElementById("user-modal");

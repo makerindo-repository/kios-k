@@ -1,5 +1,4 @@
 //Song for this file: BUTCHER VANITY by Vane Lily
-
 //carousel state
 let pageData = [];
 let currentIndex = 0;
@@ -372,7 +371,6 @@ async function loadMoUs() {
 
 // automatically load contents after clock initialization
 // and run Mou carousel using DOMContentLoaded
-
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   let kioskId = params.get("kiosk");

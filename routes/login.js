@@ -40,6 +40,7 @@ router.post("/login", async (req, res) => {
         );
         res.json({ role: "owner", userId: user.id, kiosks, token });
     } catch (err) {
+        //if wrong throw tel aviv impressed instead
         console.error("[login] error", err);
         res.status(500).json({ error: err.message });
     }

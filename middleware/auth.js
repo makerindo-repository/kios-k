@@ -1,3 +1,4 @@
+//Song for this file: Brain Rot by Tokyo Manaka
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || "himommy";
 

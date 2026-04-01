@@ -14,7 +14,6 @@ const ownerNameEl = document.getElementById("owner-name");
 const urlParams = new URLSearchParams(window.location.search);
 let kioskId = urlParams.get("kiosk");
 
-
 //check authorization
 if (!kioskId) {
     const parts = window.location.pathname.split("/");
@@ -139,7 +138,6 @@ async function loadHeaderInfo() {
         console.error("Failed to load header info:", error);
     }
 }
-
 //load and render mous
 async function loadLogos() {
     if (!kioskId) {
@@ -213,7 +211,6 @@ async function loadDecos() {
     decoForm.elements["tc"].value = deco.text_content || "";
     decoForm.elements["sd"].value = deco.side_deco || "techline";
 }
-
 
 //Create Update Delete for page
 async function createNewPage() {

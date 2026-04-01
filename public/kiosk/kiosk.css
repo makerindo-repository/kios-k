@@ -1,7 +1,7 @@
 /*Song for this file: Looping the Rooms by rusino*/
 /*Root and / or global nodes*/
 :root {
-  --primary-color: #10507c;
+  --primary-color: rgb(16, 79, 122);
 }
 * {
   margin: 0;
