@@ -38,37 +38,38 @@
             <h1 id="page-title">Peta Lokasi KIOS-K</h1>
             <div id="map" style="height: 500px; width: 100%;"></div>
         </div>
-        <div class="large-container">
-            <div class="manage-container"> <!--kiosks table-->
-                <h1>Daftar KIOS-K</h1>
-                <div class="table-wrapper">
-                    <table id="kiosk-table">
-                        <thead>
-                            <tr>
-                                <th class="number">#</th>
-                                <th>Pemilik</th>
-                                <th>Nama KIOS-K</th>
-                                <th>Status</th>
-                                <th class="action">Aksi</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+        <div class="manage-container"> <!--kiosks table-->
+            <h1>Daftar KIOS-K</h1>
+            <div class="table-wrapper">
+                <table id="kiosk-table">
+                    <thead>
+                        <tr>
+                            <th class="number">#</th>
+                            <th>ID Registrasi</th>
+                            <th>Pemilik</th>
+                            <th>Nama KIOS-K</th>
+                            <th>Status</th>
+                            <th>Garansi</th>
+                            <th class="action">Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-            <div class="manage-container"> <!--kiosks table-->
-                <h1>Daftar Pengguna</h1>
-                <div class="table-wrapper">
-                    <table id="user-table">
-                        <thead>
-                            <tr>
-                                <th class="number">#</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th class="action">Aksi</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+        </div>
+        <div class="manage-container"> <!--users table-->
+            <h1>Daftar Pengguna</h1>
+            <div class="table-wrapper">
+                <table id="user-table">
+                    <thead>
+                        <tr>
+                            <th class="number">#</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>No. Telepon</th>
+                            <th class="action">Aksi</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div class="manage-container buttons"> <!--buttons, not tables though-->
@@ -82,9 +83,8 @@
                 <h2>Form KIOS-K</h2>
                 <form id="kiosk-form">
                     <label>Nama: <br><input type="text" name="name"></label>
-                    <label>Pemilik: <br><select name="owner"></select></label>
                     <input type="hidden" name="id">
-                    <button type="submit" class="submit-btn">Tambah / Edit KIOS-K</button>
+                    <button type="submit" class="submit-btn">Edit KIOS-K</button>
                 </form>
             </div>
         </div>

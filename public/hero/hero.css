@@ -2,6 +2,8 @@
 body {
     margin: 0;
     background-color: #10507c;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
 }
 nav {
     display: flex;
@@ -16,11 +18,50 @@ nav h2 {
     font-size: 20px;
     color: #f7f7f7;
 }
+nav h2:hover {
+    opacity: 0.85;
+    cursor: pointer;
+}
+
+.regist-dropdown {
+    position: relative;
+}
+.regist-menu {
+    position: absolute;
+    top: calc(70% + 10px);
+    right: 0;
+    display: none;
+    flex-direction: column;
+    background-color: #eaeaea;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    min-width: 250px;
+    z-index: 10;
+}
+.regist-dropdown:hover .regist-menu {
+    display: flex;
+}
+.regist-menu a {
+    color: #10507c;
+    text-decoration: none;
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    font-size: 15px;
+}
+.regist-menu a:last-child {
+    border-bottom: none;
+}
+.regist-menu a:hover {
+    opacity: 0.85;;
+}
 
 main {
     display: flex;
     flex-direction: row;
     width: 100vw;
+}
+.hidden {
+    display: none;
 }
 
 .sidebar {
@@ -61,4 +102,52 @@ main {
 .titles h2 {
     font-size: 20px;
     margin: 10px -30pc 0px 0px;
+}
+
+.image img {
+    width: 600px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0000008b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal.hidden {
+    display: none;
+}
+.modal-content {
+    background-color: #f7f7f7;
+    border-radius: 12px;
+    padding: 30px 40px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    text-align: left;
+}
+.modal-content p {
+    font-size: 14px;
+}
+.cancel-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #7a1010;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+.cancel-btn:hover {
+    opacity: 0.85;
+    cursor: pointer;
 }

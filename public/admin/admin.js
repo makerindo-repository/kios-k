@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const id = e.target.dataset.id;
 
         if (e.target.id === 'add-new-kiosk') {
-            openKioskModal();
+            createNewKiosk();
             return;
         }
         if (e.target.classList.contains("edit")) {
@@ -179,32 +179,10 @@ function openKioskModal(kiosk) {
     if (kiosk) {
         kioskForm.elements["id"].value = kiosk.id;
         kioskForm.elements["name"].value = kiosk.name;
-        const ownerSelect = kioskForm.elements["owner"];
-        ownerSelect.innerHTML = '<option value="">-- Pilih Pemilik --</option>';
-        ownersData.forEach(owner => {
-            const option = document.createElement("option");
-            option.value = owner.id;
-            option.textContent = owner.username;
-            ownerSelect.appendChild(option);
-        });
-        const currentOwner = ownersData.find(o => o.username === kiosk.owner);
-        if (currentOwner) {
-            ownerSelect.value = currentOwner.id;
-        } else {
-            ownerSelect.value = "";
-        }
     }
     else {
         kioskForm.elements["id"].value = "";
         kioskForm.elements["name"].value = "";
-        const ownerSelect = kioskForm.elements["owner"];
-        ownerSelect.innerHTML = '<option value="">-- Pilih Pemilik --</option>';
-        ownersData.forEach(owner => {
-            const option = document.createElement("option");
-            option.value = owner.id;
-            option.textContent = owner.username;
-            ownerSelect.appendChild(option);
-        });
     }
     kioskModal.classList.remove("hidden");
 };
@@ -219,6 +197,12 @@ function openUserModal(user) {
     }
     userModal.classList.remove("hidden");
 };
+function formatDate(d) {
+    const day = String(d.getDate()).padStart(2,'0');
+    const month = String(d.getMonth()+1).padStart(2,'0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+}
 
 //loads
 async function loadKiosks() {
@@ -240,29 +224,65 @@ async function loadKiosks() {
         if (oldBody) oldBody.remove();
 
         const tbody = document.createElement("tbody");
-
         kiosks.forEach((k, index) => {
             const row = document.createElement("tr");
             row.dataset.id = k.id;
+            row.dataset.regist_id = k.regist_id;
             row.dataset.name = k.name;
             row.dataset.owner = k.owner;
             row.dataset.status = k.status;
+            row.dataset.warranty = k.warranty;
+
+            //Status stuff
+            let statusText = "";
+            let toggleButton = "";
+            let editButton = "";
+            switch (k.status) {
+                case "active":
+                    statusText = "Aktif";
+                    toggleButton = `<button data-id="${k.id}" class="button warning block"><i class="fi fi-rr-ban"></i></button>`;
+                    editButton = `<button data-id="${k.id}" class="button default edit"><i class="fi fi-rr-edit"></i></button>`;
+                    break;
+                case "blocked":
+                    statusText = "Diblokir";
+                    toggleButton = `<button data-id="${k.id}" class="button warning block"><i class="fi fi-rr-undo"></i></button>`;
+                    editButton = `<button data-id="${k.id}" class="button default edit"><i class="fi fi-rr-edit"></i></button>`;
+                    break;
+                default:
+                    statusText = "Nonaktif";
+                    toggleButton = ``;
+                    editButton = ``;
+                    break;
+            };
+
+            //Warranty stuff
+            const now = new Date();
+            let warrantyText = '';
+            if (!k.warranty) {
+                warrantyText = 'Belum Aktif';
+            } else if (new Date(k.warranty) > now) {
+                warrantyText = `Aktif | ${formatDate(new Date(k.warranty))}`;
+            } else {
+                warrantyText = 'Kadaluarsa'
+            }
 
             row.innerHTML = `
             <td>${index + 1}</td>
+            <td>${k.regist_id}</td>
             <td>${k.owner || 'N/A'}</td>
             <td>${k.name}</td>
-            <td>${k.status === "active" ? "Aktif" : "Diblokir"}</td>
+            <td>${statusText}</td>
+            <td>${warrantyText}</td>
             <td class="action">
-                <button data-id="${k.id}" class="button default edit"><i class="fi fi-rr-edit"></i></button>
-                <button data-id="${k.id}" class="button warning block">${k.status === "active" ? '<i class="fi fi-rr-ban"></i>' : '<i class="fi fi-rr-undo"></i>'}</button>
+                ${editButton}
+                ${toggleButton}
                 <button data-id="${k.id}" class="button alert delete"><i class="fi fi-rr-trash"></i></button>
             </td>
             `;
             tbody.appendChild(row);
         });
         const addKiosk = document.createElement("tr");
-        addKiosk.innerHTML = "<td colspan='5'><button id='add-new-kiosk' class='button default'>Tambah KIOS-K Baru</button></td>";
+        addKiosk.innerHTML = "<td colspan='7'><button id='add-new-kiosk' class='button default'>Tambah KIOS-K Baru</button></td>";
 
         table.appendChild(tbody);
 
@@ -305,6 +325,7 @@ async function loadUsers() {
             <td>${index + 1}</td>
             <td>${u.username || 'N/A'}</td>
             <td>${u.email}</td>
+            <td>${u.no_telp}</td>
             <td class="action">
                 <button data-id="${u.id}" class="button default edit"><i class="fi fi-rr-edit"></i></button>
                 <button data-id="${u.id}" class="button alert delete"><i class="fi fi-rr-trash"></i></button>
@@ -314,7 +335,7 @@ async function loadUsers() {
         });
         
         const addUser = document.createElement("tr");
-        addUser.innerHTML = "<td colspan='5'><button id='add-new-user' class='button default'>Tambah Pengguna Baru</button></td>";
+        addUser.innerHTML = "<td colspan='6'><button id='add-new-user' class='button default'>Tambah Pengguna Baru</button></td>";
 
         table.appendChild(tbody);
         // remove any previous add-row to keep only one
@@ -415,10 +436,26 @@ async function deleteKiosk(id) {
         alert("Gagal menghapus kios");
     }
 }
+async function createNewKiosk() {
+    try {
+        const res = await apiFetch("/api/admin/kiosks", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({})
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || res.statusText);
+        }
+        await loadKiosks();
+    } catch (err) {
+        console.error("Failed to create kiosk", err);
+        alert("Gagal membuat kios baru: " + err.message);
+    }
+}
 async function toggleBlock(kioskId, currentStatus) {
+    if (currentStatus === "unregistered") return;
     const newStatus = currentStatus === "active" ? "blocked" : "active";
-    console.log(newStatus);
-
     await apiFetch(`/api/admin/kiosks/${kioskId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -439,5 +476,5 @@ document.querySelector(".logout")?.addEventListener("click", () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("role");
-    window.location.href = "/login";
+    window.location.href = "/";
 });

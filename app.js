@@ -12,12 +12,14 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const ownerRouter = require("./routes/owner");
+const registRouter = require("./routes/regist");
 const loginRouter = require("./routes/login");
 const adminRouter = require("./routes/admin");
 const kioskRouter = require("./routes/kiosk");
 
 app.use("/api", kioskRouter);
 app.use("/api", loginRouter);
+app.use("/api", registRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/owner", ownerRouter);
 
@@ -33,6 +35,9 @@ app.get('/manage/:kioskId', (req, res) => {
 })
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login', 'login.html'))
+})
+app.get('/regist', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'registration', 'registration.html'))
 })
 app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'admin.html'));

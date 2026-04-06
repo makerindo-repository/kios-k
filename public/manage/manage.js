@@ -6,13 +6,13 @@ const pageModal = document.getElementById("page-modal");
 const pageForm = document.getElementById("page-form");
 const welcomeModal = document.getElementById("welcome-modal")
 const welcomeForm = document.getElementById("welcome-form")
-const mouModal = document.getElementById("mou-modal");
-const mouForm = document.getElementById("mou-form");
+const mouFileInput = document.getElementById("mou-file-input");
 const decoForm = document.getElementById("deco-form");
 const kioskNameEl = document.getElementById("kiosk-name");
 const ownerNameEl = document.getElementById("owner-name");
 const urlParams = new URLSearchParams(window.location.search);
 let kioskId = urlParams.get("kiosk");
+let pendingMouId = null;
 
 //check authorization
 if (!kioskId) {
@@ -50,6 +50,37 @@ function showAccessDenied(title) {
     `;
 }
 
+async function uploadMouFile(file, id) {
+    if (!kioskId) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+    const method = id ? "PUT" : "POST";
+    const url = id ? `/api/owner/kiosk/${kioskId}/mous/${id}` : `/api/owner/kiosk/${kioskId}/mous`;
+
+    try {
+        const res = await apiFetch(url, { method, body: formData });
+        if (!res.ok) {
+            const err = await res.json();
+            alert("Gagal menyimpan MoU: " + (err.error || res.statusText));
+            return;
+        }
+        loadLogos();
+    } catch (error) {
+        console.error("Gagal mengunggah MoU:", error);
+        alert("Gagal menyimpan MoU");
+    } finally {
+        if (mouFileInput) mouFileInput.value = "";
+        pendingMouId = null;
+    }
+}
+
+mouFileInput?.addEventListener("change", async e => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    await uploadMouFile(file, pendingMouId);
+});
+
 //load and render pages
 async function loadPages() {
     if (!kioskId) {
@@ -81,6 +112,12 @@ function renderCards(pages) {
         }
         return [];
     }
+    //special first card for adding new page
+    const addCard = document.createElement("div");
+    addCard.className = "page-card add-card";
+    addCard.innerHTML = `<div class="add-button">+</div>`;
+    addCard.onclick = () => createNewPage();
+    pageContainer.appendChild(addCard);
 
     pages.forEach(page => {
         const card = document.createElement("div");
@@ -108,16 +145,6 @@ function renderCards(pages) {
 
         pageContainer.appendChild(card);
     });
-
-    //special last card for adding new page
-    const addCard = document.createElement("div");
-    addCard.className = "page-card add-card";
-    addCard.innerHTML = `<div class="add-button">+</div>`;
-    addCard.onclick = () => createNewPage();
-
-    pageContainer.appendChild(addCard);
-
-    currentIndex = 0;
 }
 //load and render kiosk header info
 async function loadHeaderInfo() {
@@ -156,7 +183,14 @@ async function loadLogos() {
 }
 function renderLogos(logos) {
     mouContainer.innerHTML = "";
-
+    
+    //special first card for adding new logo
+    const addCard = document.createElement("div");
+    addCard.className = "mou-card add-card";
+    addCard.innerHTML = `<div class="add-button">+</div>`;
+    addCard.onclick = () => createNewMou();
+    mouContainer.appendChild(addCard);
+    
     logos.forEach(logo => {
         const card = document.createElement("div");
         card.className = "mou-card";
@@ -174,14 +208,6 @@ function renderLogos(logos) {
 
         mouContainer.appendChild(card);
     });
-
-    // special last card for adding new logo
-    const addCard = document.createElement("div");
-    addCard.className = "mou-card add-card";
-    addCard.innerHTML = `<div class="add-button">+</div>`;
-    addCard.onclick = () => createNewMou();
-
-    mouContainer.appendChild(addCard);
 
     currentIndex = 0;
 }
@@ -206,10 +232,9 @@ async function loadDecos() {
 
     const deco = decos[0];
     decoForm.elements["cp"].value = deco.color_palette || "#10507c";
-    decoForm.elements["ip"].value = deco.page_interval || "5";
+    decoForm.elements["pi"].value = deco.page_interval || "5";
     decoForm.elements["mou"].value = deco.mou_option != null ? deco.mou_option : "1";
     decoForm.elements["tc"].value = deco.text_content || "";
-    decoForm.elements["sd"].value = deco.side_deco || "techline";
 }
 
 //Create Update Delete for page
@@ -278,24 +303,13 @@ async function deletePage(id, cardElement) {
 
 //Create Update Delete for mou
 async function createNewMou() {
-    mouForm.reset();
-    mouForm.elements["id"].value = "";
-    mouModal.classList.remove("hidden")
+    pendingMouId = null;
+    mouFileInput?.click();
 }
 async function editMou(id) {
     if (!kioskId) return;
-    const res = await apiFetch(`/api/owner/kiosk/${kioskId}/mous`);
-    const logos = await res.json();
-    try {
-        const logo = logos.find(l => l.id == id);
-        if (!logo) return alert("Logo tidak ditemukan: 404");
-        mouModal.classList.remove("hidden");
-
-        mouForm.elements["id"].value = logo.id;
-    } catch(error) {
-        console.error(error);
-        alert("Gagal memuat mou");
-    }
+    pendingMouId = id;
+    mouFileInput?.click();
 }
 async function deleteMou(id, cardElement) {
     if (!kioskId) return;
@@ -352,35 +366,6 @@ pageForm.addEventListener("submit", async e => {
     } catch(error) {
         console.error("[owner form] fetch error:", error);
         alert("Gagal menyimpan halaman: " + error.message)
-    }
-});
-mouForm.addEventListener("submit", async e => {
-    e.preventDefault();
-
-    const id = mouForm.elements["id"].value;
-    const formData = new FormData(mouForm);
-    
-    // Remove id from formData for POST requests
-    if (!id) {
-        formData.delete("id");
-    }
-
-    const method = id ? "PUT" : "POST";
-    const url = id ? `/api/owner/kiosk/${kioskId}/mous/${id}` : `/api/owner/kiosk/${kioskId}/mous`;
-
-    try {
-        const res = await apiFetch(url, {
-        method, body: formData
-        });
-
-        if (!res.ok) throw new Error("Gagal menyimpan");
-
-        mouModal.classList.add("hidden");
-        mouForm.reset();
-        loadLogos();
-    } catch(error) {
-        console.error(error);
-        alert("Gagal menyimpan MoU")
     }
 });
 welcomeForm.addEventListener("submit", async e => {
@@ -456,7 +441,7 @@ document.querySelector(".logout")?.addEventListener("click", () => {
     localStorage.removeItem("role");
 
     // Redirect to login
-    window.location.href = "/login";
+    window.location.href = "/";
 });
 document.addEventListener("keydown", function(e) {
     if(e.key === 'F2') {

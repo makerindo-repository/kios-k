@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="/hero/hero.js" defer></script>
         <link rel="stylesheet" href="/hero/hero.css">
         <link rel="icon" href="/assets/favicon.png" type="image/x-icon">
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
@@ -9,9 +10,10 @@
     </head>
     <body>
         <nav>
-            <a href=""><h2>Description</h2></a>
-            <a href=""><h2>Gallery</h2></a>
-            <a href="/login"><h2>Login</h2></a>
+            <a id="desc-button"><h2>Description</h2></a>
+            <a href="/regist?type=kiosk"><h2>Activate</h2></a>
+            <a href="/regist?type=user"><h2>Sign Up</h2></a>
+            <a href="/login"><h2>Log In</h2></a>
         </nav>
         <main>
             <section class="sidebar">
@@ -24,9 +26,21 @@
                 <h1>KIOS-K</h1>
                 <h2>Expendable | Reusable | Customizable</h2>
             </section>
-            <section>
-                <h1>Image goes here</h1>
+            <section class="image">
+                <img src="/assets/kios-k.png" alt="">
             </section>
+            <div class="modal hidden" id="description">
+                <div class="modal-content">
+                    <button type="button" id="cancel-add" class="cancel-btn">X</button>
+                    <h2>Deskripsi Mengenai KIOS-K</h2>
+                    <p>KIOS-K adalah display digital yang dimana pengguna bisa menambah kontennya sendiri melalui
+                        website kami, tanpa perlu mengetik kode satu-pun. Tidak hanya itu, pengguna juga bisa
+                        mengatur warna, logo, bagian display, dan lama waktu tayang per-halamannya sendiri, tidak diatur oleh sistem.<br>
+                        KIOS-K sendiri mempunyai fungsi kedua sebagai dispenser hand sanitizer; anda bisa menaruh tangan anda
+                        di dalam lubang di bawah layar dan sejumlah hand sanitizer akan tertuang ke tangan anda.
+                    </p>
+                </div>
+            </div>
         </main>
     </body>
     <footer>

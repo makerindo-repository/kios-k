@@ -1,0 +1,71 @@
+<!--Song for this file: -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Registrasi</title>
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
+        <link rel="stylesheet" href="/registration/registration.css">
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="/registration/registration.js" defer></script>
+    </head>
+    <body>
+        <img src="../assets/logo.webp" class="logo">
+        <div class="card hidden" id="user-modal">
+            <h1>Daftar Pengguna</h1>
+            <form id="user-form">
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-user"></i>
+                    <input type="text" name="username" placeholder="Masukkan Username Disini" required>
+                </div>
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-envelope"></i>
+                    <input type="text" name="email" placeholder="Masukkan Email Disini" required>
+                </div>
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-phone-call"></i>
+                    <input type="text" name="no_telp" placeholder="Masukkan Nomor Telepon Disini" required>
+                </div>
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-key"></i>
+                    <input type="password" name="password" placeholder="Masukkan Password Disini" required>
+                </div>
+                <button type="submit" class="button">Register</button>
+            </form>
+        </div>
+        <div class="card hidden" id="kiosk-modal">
+            <h1>Aktivasi KIOS-K</h1>
+            <form id="kiosk-form">
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-user"></i>
+                    <input type="text" name="regist_id" placeholder="Masukkan Kode Registrasi Disini" required>
+                </div>
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-pencil"></i>
+                    <input type="text" name="name" placeholder="Masukkan Nama KIOS-K Anda (bebas)" required>
+                </div>
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-envelope"></i>
+                    <input type="text" name="email" placeholder="Masukkan Email Disini" required>
+                </div>
+                <div class="field-with-icon">
+                    <i class="fi fi-rr-key"></i>
+                    <input type="password" name="password" placeholder="Masukkan Password Disini" required>
+                </div>
+                <!--map stuff-->
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
+                <button type="button" id="open-map">Atur Lokasi KIOS-K</button>
+                <div class="map-modal hidden" id="map-modal">
+                    <div class="map" id="map"></div>
+                    <div class="buttons">
+                        <button type="button" id="save-map">Simpan Lokasi</button>
+                        <button type="button" class="danger" id="close-map">Tutup Peta</button>
+                    </div>
+                </div>
+                <button type="submit" class="button">Aktifkan</button>
+            </form>
+        </div>
+    </body>
+</html>

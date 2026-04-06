@@ -1,0 +1,116 @@
+/*Song for this file: MoeChakkaFire by issey*/
+/*universal*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+body, html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(#f7f7f7, #d6e1e9 , #abbfcd ,#104f7a);
+}
+
+h1 {
+    text-align: center;
+    margin: 10px;
+}
+h2 {
+    text-align: center;
+    margin: 10px;
+}
+.logo {
+    width: 50%;
+}
+
+/*fields*/
+.card {
+    background-color: #d7d7d7;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    width: 30vw;
+    text-align: center;
+    margin: 30px;
+}
+.field-with-icon {
+    position: relative;
+    width: 100%;
+}
+.field-with-icon i {
+    position: absolute;
+    left: 12px;          
+    top: 52.5%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 18px;   
+    pointer-events: none; 
+}
+.field-with-icon input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    margin: 10px 0;
+    background-color: #b5b5b5;
+    border: 1px solid #cdcdcd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.map-modal{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #0000008b;
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+.map {
+    width: 90%;
+    height: 80%;
+    margin-bottom: 20px;
+    border-radius: 20px;
+}
+
+/*button*/
+.buttons {
+    position: absolute;
+    width: 25vw;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #104f7a;
+    color: #cdcdcd;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.danger {
+    background-color: #7a1010;
+}
+button:hover {
+    opacity: 0.85;
+}
+
+/*hide selection before entering*/
+.hidden {
+    display: none;
+}

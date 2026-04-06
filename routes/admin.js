@@ -1,6 +1,7 @@
 //Song for this file: AKAGE by Smilybruh
 const express = require("express");
 const pool = require("../db");
+const crypto = require("crypto");
 const router = express.Router();
 const { authenticate } = require("../middleware/auth");
 const { requireAdmin } = require("../middleware/roles");
@@ -14,7 +15,9 @@ router.use(requireAdmin);
 //kiosks' routes
 router.get("/kiosks", async (req, res) => {
     try {
-        const [rows] = await pool.query(`SELECT k.id, k.name, k.status, k.latitude, k.longitude, u.username AS owner FROM kiosks k LEFT JOIN users u ON k.owner_id = u.id`);
+        const [rows] = await pool.query(`SELECT
+            k.id, k.regist_id, k.name, k.status, k.latitude, k.longitude, k.warranty, u.username
+            AS owner FROM kiosks k LEFT JOIN users u ON k.owner_id = u.id`);
         res.json(rows);
     } catch(error) {
         res.status(500).json({ error: error.message });
@@ -22,21 +25,26 @@ router.get("/kiosks", async (req, res) => {
 });
 router.post("/kiosks", async (req, res) => {
     const conn = await pool.getConnection();
-
     try {
-        const { name, owner_id } = req.body;
-        if (!name || !owner_id) {
-            return res.status(400).json({ error: "Nama dan pemilik dibutuhkan" });
-        }
         const kioskId = crypto.randomUUID();
+        const [users] = await conn.query("SELECT id FROM users WHERE role = 'superadmin'")
+        const adminId = users[0].id;
         await conn.beginTransaction();
 
-        await conn.query(
-            `INSERT INTO kiosks (id, name, owner_id, latitude, longitude)
-             VALUES (?, ?, ?, 0, 0)`,
-            [kioskId, name, owner_id]
+       const [result] = await conn.query(
+            `INSERT INTO kiosks (id, owner_id, name, latitude, longitude, status, warranty)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [kioskId, adminId, 'N/A', 0, 0, 'unregistered', null]
         );
+        const seq = result.insertId;
+        const now = new Date();
+        const date = now.toISOString().slice(0, 10).replace(/-/g, "");
+        const paddedSeq = String(seq).padStart(4, "0");
+        const regist_id = `MKRKIOSK${date}${paddedSeq}`;
 
+        await conn.query(
+            `UPDATE kiosks SET regist_id = ? WHERE id = ?`, [regist_id, kioskId]
+        );
         await conn.query(
             `INSERT INTO contents
             (kiosk_id, page_type, heading, title, description, photos)
@@ -50,7 +58,7 @@ router.post("/kiosks", async (req, res) => {
                 JSON.stringify([])
             ]
         );
-
+        console.log("C3")
         await conn.query(`
             INSERT INTO decorations
             (kiosk_id, color_palette, page_interval, mou_option, kiosk_logo, text_content)
@@ -64,11 +72,14 @@ router.post("/kiosks", async (req, res) => {
                 ""
             ]
         );
+        console.log("C4")
         await conn.commit();
         res.status(201).json({ id: kioskId });
     } catch (error) {
         await conn.rollback();
-        res.status(500).json({ error: error.message });
+        //res.status(500).json({ error: error.message });
+        console.log("Kena ini");
+        console.log(error.message);
     } finally {
         conn.release();
     }
@@ -137,7 +148,7 @@ router.delete("/kiosks/:id", async (req, res) => {
 router.get("/users", async (req, res) => {
     try {
         // include id so caller can edit/delete
-        const [rows] = await pool.query(`SELECT id, username, email, role FROM users WHERE role = "owner"`);
+        const [rows] = await pool.query(`SELECT * FROM users WHERE role = "owner"`);
         res.json(rows);
     } catch(error) {
         res.status(500).json({ error: error.message });

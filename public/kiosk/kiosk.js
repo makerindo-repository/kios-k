@@ -67,27 +67,6 @@ function updateClock() {
   }
 }
 
-function updateLocation() {
-  const kioskId = new URLSearchParams(window.location.search).get("kiosk") || window.location.pathname.split("/")[2];
-  if (!navigator.geolocation || !kioskId) return;
-  
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    try {
-      const deltaLat = pos.coords.latitude + 0.134346;
-      const deltaLong = pos.coords.longitude + -2.773102
-      console.log(deltaLat, deltaLong);
-      await apiFetch(`/api/owner/kiosk/${kioskId}/location`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ latitude: deltaLat, longitude: deltaLong})
-      });
-    } catch (err) {
-      console.error("Location update failed", err);
-    }
-  }, (err) => {
-    console.warn("User denied or unavailable location", err);
-  });
-}
 function startWebSocket(kioskId) {
   const scheme = location.protocol === "https:" ? "wss" : "ws";
   const ws = new WebSocket(`${scheme}://${location.host}`);
@@ -129,7 +108,7 @@ function apiFetch(url, options = {}) {
     }
 
     return fetch(url, { ...options, headers }).then(async res => {
-        if (res.status === 403) {
+        if (res.status === 403 || res.statu === 401) {
           window.location.href = "/login";
         }
         return res;
@@ -386,8 +365,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadContents();
   });
   loadMoUs();
-  updateLocation();
-  setInterval(updateLocation, 60000);
 });
 
 updateClock();

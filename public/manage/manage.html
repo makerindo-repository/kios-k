@@ -41,7 +41,7 @@
                 <h2>Dekorasi Opsional</h2>
                 <div class="mini-fields">
                     <label>Logo Usaha: <input type="file" name="kl"></label>
-                    <label>Isi Teks / Tulisan: <input type="text" name="tc"></label>
+                    <label>Isi Teks / Tulisan: <input type="text" name="tc" placeholder="Maks. 30 karakter"></label>
                 </div>
                 <button type="submit" class="submit-btn">Ubah Tampilan Display KIOS-K</button>
             </form>
@@ -67,17 +67,6 @@
                 </form>
             </div>
         </div>
-        <div id="mou-modal" class="modal hidden">
-            <div class="modal-content">
-                <button type="button" id="cancel-add" class="cancel-btn">X</button>
-                <h2>Form MoU</h2>
-                <form id="mou-form">
-                    <label>Logo <br><input type="file" name="image" accept="image/*" multiple></label>
-                    <input type="hidden" name="id">
-                    <button type="submit" class="submit-btn">Tambah  / Edit Logo</button>
-                </form>
-            </div>
-        </div>
         <div id="welcome-modal" class="modal hidden">
             <div class="modal-content">
                 <button type="button" id="cancel-add" class="cancel-btn button alert"><b>X</b></button>
@@ -91,6 +80,9 @@
                 </form>
             </div>
         </div>
+        <input type="file" id="mou-file-input" accept="image/*" style="display:none">
+    </body>
+    <footer>
     </body>
     <footer>
         <div class="socials">

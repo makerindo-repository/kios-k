@@ -160,35 +160,4 @@ router.put("/kiosk/:kioskId/decorations", upload.single("kl"), async (req, res) 
     return res.status(200).json({ success: true });
 });
 
-//upload location
-router.put("/kiosk/:kioskId/location", async (req, res) => {
-    const { kioskId } = req.params;
-    const { latitude, longitude } = req.body;
-
-    if (latitude === undefined || longitude === undefined) {
-        return res.status(400).json({ error: "Latitude and longitude required" });
-    }
-
-    try {
-        const [rows] = await pool.query(
-            "SELECT id FROM kiosks WHERE id = ?",
-            [kioskId]
-        );
-
-        if (rows.length === 0) {
-            return res.status(403).json({ error: "Not allowed to update this kiosk" });
-        }
-
-        await pool.query(
-            "UPDATE kiosks SET latitude = ?, longitude = ? WHERE id = ?",
-            [latitude, longitude, kioskId]
-        );
-
-        res.json({ success: true });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Update failed" });
-    }
-});
-
 module.exports = router;
