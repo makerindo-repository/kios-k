@@ -128,7 +128,11 @@ router.get("/kiosk/:kioskId/decorations", async (req, res) => {
 })
 router.put("/kiosk/:kioskId/decorations", upload.single("kl"), async (req, res) => {
     const { kioskId } = req.params;
-    const { cp = "", pi = "", mou = "1", tc = "" } = req.body;
+    let { cp = "", pi = "", mou = "1", tc = "" } = req.body;
+    
+    // Ensure tc is a string and trim it
+    tc = String(tc || "").trim();
+    
     const kioskLogo = req.file ? req.file.filename : null;
     const [existing] = await pool.query("SELECT id, kiosk_logo FROM decorations WHERE kiosk_id = ?", [kioskId]);
 
@@ -151,7 +155,7 @@ router.put("/kiosk/:kioskId/decorations", upload.single("kl"), async (req, res) 
             mou_option,
             kiosk_logo,
             text_content
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?)`,
             [kioskId, cp, pi, mou, kioskLogo, tc]
         );
     }

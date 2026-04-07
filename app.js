@@ -9,6 +9,7 @@ init(server);
 const PORT = 8000;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const ownerRouter = require("./routes/owner");

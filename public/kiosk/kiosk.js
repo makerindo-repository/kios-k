@@ -5,9 +5,6 @@ let currentIndex = 0;
 let pageInterval = null;
 let carouselInterval = null;
 let pageIntervalMs = 7000;
-
-const PAGE_INTERVAL = 7000; // fallback page duration in milliseconds
-const CAROUSEL_INTERVAL = 2000; // fallback carousel speed
 const container = document.getElementById('page-container');
 
 //find way to load all the pages related the kioskId, then turn it into carousel
@@ -288,8 +285,8 @@ function renderMultiPage(page) {
       <div class="description"><p>${page.description || page.desc || ""}</p></div>
     </section>
   `;
-
-  startCarousel(PAGE_INTERVAL / (photos.length || 1));
+  console.log(pageIntervalMs / (photos.length));
+  startCarousel(pageIntervalMs / (photos.length));
 }
 function renderWelcomePage(page) {
   const photos = parsePhotosField(page.photos);

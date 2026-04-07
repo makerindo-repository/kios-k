@@ -402,6 +402,10 @@ decoForm.addEventListener("submit", async e => {
     e.preventDefault();
 
     const formData = new FormData(decoForm);
+    
+    // Ensure text content is properly formatted with preserved spaces
+    const textContent = decoForm.elements["tc"].value;
+    formData.set("tc", textContent); // Explicitly set to ensure proper encoding
 
     const method = "PUT";
     const url = `/api/owner/kiosk/${kioskId}/decorations`;
