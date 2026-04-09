@@ -105,7 +105,7 @@ function apiFetch(url, options = {}) {
     }
 
     return fetch(url, { ...options, headers }).then(async res => {
-        if (res.status === 403 || res.statu === 401) {
+        if (res.status === 403 || res.status === 401) {
           window.location.href = "/login";
         }
         return res;
@@ -241,7 +241,6 @@ function showPage(index) {
     container.classList.remove('fade-out');
   }, 500);
 }
-
 function startCarousel(intervalTime) {
   const images = document.querySelectorAll(".carousel-image");
   if (images.length <= 1) return;
@@ -362,6 +361,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadContents();
   });
   loadMoUs();
+});
+document.addEventListener("keydown", function(e) {
+    if(e.key === 'F2') {
+        window.location.href = `/manage/${kioskId}`;
+    }
 });
 
 updateClock();

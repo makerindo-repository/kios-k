@@ -1,0 +1,48 @@
+Note for other that will work on this project maybe years, years later: here's the code for the Arduino Nano
+I reverse engineer in three days.
+
+const int handSensorPin = A0;
+const int lampPin = 11;
+const int pumpPin = 5;
+const int threshold = 400;
+const unsigned long cooldown = 500;
+const unsigned long pumpDuration = 500;
+
+unsigned long lastActive = 0;
+bool outputActive = false;
+
+void setup() {
+  pinMode(lampPin, OUTPUT);
+  pinMode(pumpPin, OUTPUT);
+  digitalWrite(lampPin, HIGH);
+  digitalWrite(pumpPin, HIGH);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int sensorValue = analogRead(handSensorPin);
+  bool handDetected = (sensorValue < threshold);
+  unsigned long now = millis();
+
+  if (handDetected && !outputActive && (now - lastActive > cooldown)) {
+    digitalWrite(lampPin, LOW);
+    digitalWrite(pumpPin, LOW);
+    outputActive = true;
+    lastActive = now;
+
+    String json = "{\"handDetected\":true,\"timestamp\":\"";
+    json += String(now);
+    json += "\"}";
+    Serial.println(json);
+  }
+
+  if (outputActive && (now - lastActive >= pumpDuration)) {
+    digitalWrite(lampPin, HIGH);
+    digitalWrite(pumpPin, HIGH);
+    outputActive = false;
+  }
+  delay(50);
+}
+
+Note again that this only work for dispensing soap as of the third iteration (kiosk-v2026), should you add more feature, it's on you.
+Thank you

@@ -86,7 +86,7 @@ router.post("/kiosks", async (req, res) => {
 });
 router.put("/kiosks/:id", async (req, res) => {
     const kioskId = req.params.id;
-    const { name, owner_id, status, latitude, longitude } = req.body;
+    const { name } = req.body;
 
     try {
         const fields = [];
@@ -95,26 +95,6 @@ router.put("/kiosks/:id", async (req, res) => {
         if (name !== undefined) {
             fields.push("name = ?");
             values.push(name);
-        }
-
-        if (owner_id !== undefined) {
-            fields.push("owner_id = ?");
-            values.push(owner_id);
-        }
-
-        if (status !== undefined) {
-            fields.push("status = ?");
-            values.push(status);
-        }
-
-        if (latitude !== undefined) {
-            fields.push("latitude = ?");
-            values.push(latitude);
-        }
-        
-        if (longitude !== undefined) {
-            fields.push("longitude = ?");
-            values.push(longitude);
         }
 
         if (fields.length === 0) {
@@ -166,14 +146,14 @@ router.get("/users/:id", async (req, res) => {
 });
 router.post("/users", async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        if (!username || !email || !password) {
-            return res.status(400).json({ error: "username,email,password required" });
+        const { username, email, no_telp, password } = req.body;
+        if (!username || !email || !no_telp || !password) {
+            return res.status(400).json({ error: "Data incomplete" });
         }
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const [result] = await pool.query(
-            `INSERT INTO users (username,email,password,role) VALUES (?, ?, ?, "owner")`,
-            [username, email, hashedPassword]
+            `INSERT INTO users (username, email, no_telp, password, role) VALUES (?, ?, ?, ?, "owner")`,
+            [username, email, no_telp, hashedPassword]
         );
         res.status(201).json({ id: result.insertId });
     } catch(error) {

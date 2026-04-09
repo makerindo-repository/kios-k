@@ -1,8 +1,10 @@
 //Song for this file: MAD TALE by mimizu
 const kioskModal = document.getElementById("kiosk-modal");
 const kioskForm = document.getElementById("kiosk-form");
+const kioskTable = document.getElementById("kiosk-table");
 const userModal = document.getElementById("user-modal");
 const userForm = document.getElementById("user-form");
+const userTable = document.getElementById("user-table");
 
 let kiosksData = [];
 let usersData = []; // cache user list for editing
@@ -55,7 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadKioskMap();
 
     // attach delegation listener to kiosk table (fires even after reload)
-    const kioskTable = document.getElementById("kiosk-table");
     kioskTable.addEventListener("click", async (e) => {
         const row = e.target.closest("tr");
         if (!row) return;
@@ -73,7 +74,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (e.target.classList.contains("block")) {
             const kiosk = kiosksData.find(k => k.id  == id);
             const currentStatus = kiosk.status;
-            console.log("HIT");
             await toggleBlock(id, currentStatus);
         }
         if (e.target.classList.contains("delete")) {
@@ -84,7 +84,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // attach delegation listener to user table
-    const userTable = document.getElementById("user-table");
     userTable.addEventListener("click", e => {
         const row = e.target.closest("tr");
         if (!row) return;
@@ -111,10 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         let id = kioskForm.elements["id"].value.trim();
         // sanitize id - only allow digits
         const name = kioskForm.elements["name"].value.trim();
-        const owner = kioskForm.elements["owner"].value;
-
-        const payload = { name, owner_id: owner };
-
+        const payload = { name };
         const method = id ? "PUT" : "POST";
         const url = id ? `/api/admin/kiosks/${id}` : `/api/admin/kiosks`;
 
@@ -130,10 +126,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             kioskModal.classList.add("hidden");
             kioskForm.reset();
+            showToast("Berhasil menyimpan KIOS-K", "success");
             await loadKiosks();
         } catch (err) {
             console.error("Gagal menyimpan kios", err);
-            alert("Gagal menyimpan kios: " + err.message);
+            showToast("Gagal menyimpan KIOS-K", "success");
         }
     });
 
@@ -141,14 +138,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     userForm.addEventListener("submit", async e => {
         e.preventDefault();
         let id = userForm.elements["id"].value.trim();
-        // sanitize id - only allow digits
         if (id && !/^\d+$/.test(id)) id = "";
-        console.log("user form submit, id=", id);
         const username = userForm.elements["username"].value.trim();
         const email = userForm.elements["email"].value.trim();
+        const no_telp = userForm.elements["no_telp"].value.trim();
         const password = userForm.elements["password"].value;
 
-        const payload = { username, email };
+        const payload = { username, email, no_telp };
         if (password) payload.password = password;
 
         const method = id ? "PUT" : "POST";
@@ -166,13 +162,31 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             userModal.classList.add("hidden");
             userForm.reset();
+            showToast("Berhasil menyimpan pengguna", "success");
             await loadUsers();
         } catch (err) {
             console.error("Failed to save user", err);
-            alert("Gagal menyimpan pengguna: " + err.message);
+            showToast("Gagal menyimpan pengguna", "error");
         }
     });
 });
+
+//toast
+function showToast(message, type) {
+    const container = document.getElementById("toast-container");
+
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    setTimeout(() => toast.classList.add("show"), 10);
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
 
 //open
 function openKioskModal(kiosk) {
@@ -194,6 +208,7 @@ function openUserModal(user) {
         userForm.elements["id"].value = user.id;
         userForm.elements["username"].value = user.username;
         userForm.elements["email"].value = user.email;
+        userForm.elements["no_telp"].value = user.no_telp;
     }
     userModal.classList.remove("hidden");
 };
@@ -419,10 +434,11 @@ async function deleteUser(id) {
     try {
         const res = await apiFetch(`/api/admin/users/${id}`, { method: "DELETE" });
         if (!res.ok) throw new Error(`status ${res.status}`);
+        showToast("Berhasil menghapus pengguna", "success");
         await loadUsers();
     } catch (err) {
         console.error("Failed to delete user", err);
-        alert("Gagal menghapus pengguna");
+        showToast("Gagal menghapus pengguna", "error");
     }
 };
 async function deleteKiosk(id) {
@@ -430,10 +446,11 @@ async function deleteKiosk(id) {
     try {
         const res = await apiFetch(`/api/admin/kiosks/${id}`, { method: "DELETE" });
         if (!res.ok) throw new Error(`status ${res.status}`);
+        showToast("Berhasil menghapus KIOS-K", "success");
         await loadKiosks();
     } catch (err) {
         console.error("Failed to delete kiosk", err);
-        alert("Gagal menghapus kios");
+        showToast("Gagal menghapus KIOS-K", "error");
     }
 }
 async function createNewKiosk() {
@@ -447,10 +464,11 @@ async function createNewKiosk() {
             const err = await res.json();
             throw new Error(err.error || res.statusText);
         }
+        showToast("Berhasil membuat KIOS-K baru", "success");
         await loadKiosks();
     } catch (err) {
         console.error("Failed to create kiosk", err);
-        alert("Gagal membuat kios baru: " + err.message);
+        showToast("Gagal membuat KIOS-K baru", "error");
     }
 }
 async function toggleBlock(kioskId, currentStatus) {
@@ -461,6 +479,7 @@ async function toggleBlock(kioskId, currentStatus) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus })
     })
+    showToast("Berhasil mengubah status KIOS-K", "success");
     loadKiosks();
 };
 

@@ -50,6 +50,24 @@ function showAccessDenied(title) {
     `;
 }
 
+//show toast instead of that ugly ahh alert
+function showToast(message, type) {
+    const container = document.getElementById("toast-container");
+
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    setTimeout(() => toast.classList.add("show"), 10);
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+//mou upload so you just have to click button instead opening a form
 async function uploadMouFile(file, id) {
     if (!kioskId) return;
 
@@ -62,19 +80,19 @@ async function uploadMouFile(file, id) {
         const res = await apiFetch(url, { method, body: formData });
         if (!res.ok) {
             const err = await res.json();
-            alert("Gagal menyimpan MoU: " + (err.error || res.statusText));
+            showToast("Gagal menyimpan MoU", "error");
             return;
         }
+        showToast("Berhasil menyimpan MoU", "success");
         loadLogos();
     } catch (error) {
         console.error("Gagal mengunggah MoU:", error);
-        alert("Gagal menyimpan MoU");
+        showToast("Gagal menyimpan MoU", "error");
     } finally {
         if (mouFileInput) mouFileInput.value = "";
         pendingMouId = null;
     }
 }
-
 mouFileInput?.addEventListener("change", async e => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -244,12 +262,12 @@ async function createNewPage() {
     pageModal.classList.remove("hidden")
 }
 async function editPage(id) {
-    if (!kioskId) return;
+    if (!kioskId) return showToast("Tidak ada ID kiosk", "error");
     const res = await apiFetch(`/api/owner/kiosk/${kioskId}/contents`);
     const pages = await res.json();
     try {
         const page = pages.find(p => p.id == id);
-        if (!page) return alert("Halaman tidak ditemukan: 404");
+        if (!page) return showToast("Halaman tidak ditemukan", "error");
         pageModal.classList.remove("hidden");
 
         pageForm.elements["id"].value = page.id;
@@ -257,18 +275,19 @@ async function editPage(id) {
         pageForm.elements["title"].value = page.title;
         pageForm.elements["description"].value = page.description || page.desc || "";
         pageForm.elements["page_type"].value = page.page_type;
+        
     } catch(error) {
         console.error(error);
-        alert("Gagal memuat halaman");
+        showToast("Gagal memuat halaman", "error");
     }
 }
 async function editWelcome(id) {
-    if (!kioskId) return;
+    if (!kioskId) return showToast("Tidak ada ID kiosk", "error");
     const res = await apiFetch(`/api/owner/kiosk/${kioskId}/contents`);
     const pages = await res.json();
     try {
         const page = pages.find(p => p.id == id);
-        if (!page) return alert("Halaman tidak ditemukan: 404");
+        if (!page) return showToast("Halaman selamat datang tidak ditemukan", "error");
         welcomeModal.classList.remove("hidden");
 
         welcomeForm.elements["id"].value = page.id;
@@ -276,28 +295,26 @@ async function editWelcome(id) {
         welcomeForm.elements["description"].value = page.description || page.desc || "";
     } catch(error) {
         console.error(error);
-        alert("Gagal memuat halaman");
+        showToast("Gagal memuat halaman selamat datang", "error");
     }
 }
 async function deletePage(id, cardElement) {
-    if (!kioskId) return;
-    if (id === "welcome") {
-        alert("Tidak bisa menghapus halaman selamat datang!");
-        return;
-    }
+    if (!kioskId) return showToast("Tidak ada ID kiosk", "error");
     if (!confirm("Hapus halaman ini?")) return;
     try {
         const res = await apiFetch(`/api/owner/kiosk/${kioskId}/contents/${id}`, { method: "DELETE" });
         if (!res.ok) {
             const err = await res.json();
-            alert("Error dalam menghapus halaman: " + err.error);
+            console.log("Error dalam menghapus halaman: " + err.error);
+            showToast("Tidak bisa menghapus halaman", "error");
             return;
         }
         if (cardElement) cardElement.remove();
         cards = Array.from(pageContainer.querySelectorAll(".page-card"));
+        showToast("Berhasil menhapus halaman", "success");
     } catch (error) {
         console.error(error);
-        alert("Server error")
+        showToast("Server error", "error");
     }
 }
 
@@ -318,14 +335,16 @@ async function deleteMou(id, cardElement) {
         const res = await apiFetch(`/api/owner/kiosk/${kioskId}/mous/${id}`, { method: "DELETE" });
         if (!res.ok) {
             const err = await res.json();
-            alert("Error dalam menghapus mou: " + err.error);
+            console.log("Gagal menghapus MoU: " + err.error)
+            showToast("Gagal menghapus MoU", "error");
             return;
         }
         if (cardElement) cardElement.remove();
         cards = Array.from(mouContainer.querySelectorAll(".mou-card"));
+        showToast("Berhasil menghapus MoU", "success");
     } catch (error) {
         console.error(error);
-        alert("Server error")
+        showToast("Server error", "error");
     }
 }
 
@@ -335,8 +354,7 @@ pageForm.addEventListener("submit", async e => {
 
     const id = pageForm.elements["id"].value;
     const formData = new FormData(pageForm);
-    
-    // Remove id from formData for POST requests
+    // Remove id from formData for adding new content / page
     if (!id) {
         formData.delete("id");
     }
@@ -344,28 +362,25 @@ pageForm.addEventListener("submit", async e => {
     const method = id ? "PUT" : "POST";
     const url = id ? `/api/owner/kiosk/${kioskId}/contents/${id}` : `/api/owner/kiosk/${kioskId}/contents`;
 
-    console.log("[owner form] submitting", method, url, "formData keys:", Array.from(formData.keys()));
-
     try {
         const res = await apiFetch(url, {
         method, body: formData
         });
 
-        console.log("[owner form] response status:", res.status);
-
         if (!res.ok) {
             const errJson = await res.json();
-            console.error("[owner form] server error:", errJson);
-            alert("Gagal menyimpan halaman: " + (errJson.error || res.statusText));
+            console.error("[owner form] server error:", errJson.error);
+            showToast("Gagal menyimpan halaman", "error");
             return;
         }
 
+        showToast("Berhasil menyimpan halaman", "success");
         pageModal.classList.add("hidden");
         pageForm.reset();
         loadPages();
     } catch(error) {
         console.error("[owner form] fetch error:", error);
-        alert("Gagal menyimpan halaman: " + error.message)
+        showToast("Gagal menyimpan halaman", "error");
     }
 });
 welcomeForm.addEventListener("submit", async e => {
@@ -385,17 +400,18 @@ welcomeForm.addEventListener("submit", async e => {
 
         if (!res.ok) {
             const err = await res.json();
-            alert("Gagal menyimpan halaman welcome: " + err.error);
+            showToast("Gagal menyimpan halaman selamat datang", "error");
             return;
         }
 
+        showToast("Berhasil menyimpan halaman selamat datang", "success");
         welcomeModal.classList.add("hidden");
         welcomeForm.reset();
         loadPages();
 
     } catch (error) {
         console.error(error);
-        alert("Gagal menyimpan halaman welcome");
+        showToast("Gagal menyimpan halaman selamat datang", "error");
     }
 });
 decoForm.addEventListener("submit", async e => {
@@ -418,15 +434,15 @@ decoForm.addEventListener("submit", async e => {
 
         if (!res.ok) {
             const err = await res.json();
-            alert("Gagal menyimpan dekorasi: " + (err.error || res.statusText));
+            showToast("Gagalubah dekorasi", "error");
             return;
         }
-        alert("Berhasil mengubah tampilan!");
+        showToast("Berhasil menyimpan dekorasi", "success");
         loadDecos();
 
     } catch (error) {
         console.error(error);
-        alert("Gagal menyimpan dekorasi: " + error.message);
+        showToast("Gagal mengubah dekorasi", "error");
     }
 });
 document.querySelectorAll(".cancel-btn").forEach(btn => {

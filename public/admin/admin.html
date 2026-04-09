@@ -12,6 +12,11 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     </head>
     <body>
+        <!--Toast-->
+        <div class="toast-container" id="toast-container">
+            <div class="toast">
+            </div>
+        </div>
         <!--Not hidden displays-->
         <div class="manage-container">
             <h1>Dashboard Admin KIOS-K</h1>
@@ -95,8 +100,8 @@
                 <form id="user-form">
                     <label>Username: <br><input type="text" name="username"></label>
                     <label>Email: <br><input type="text" name="email"></label>
-                    <label>Password: <br><input type="password" name="password"></label> <!--Find a way to make this password fields to change depending are we adding new user (confirm pass) or editing (check old password)-->
-                    <!-- <label>Konfirmasi Password: <br><input type="password" name="confirm"></label> -->
+                    <label>No. Telepon: <br><input type="text" name="no_telp"></label>
+                    <label>Password: <br><input type="password" name="password"></label>
                     <input type="hidden" name="id">
                     <button type="submit" class="submit-btn">Tambah / Edit Pengguna</button>
                 </form>
