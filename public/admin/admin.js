@@ -56,25 +56,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     kioskTable.addEventListener("click", async (e) => {
         const row = e.target.closest("tr");
         if (!row) return;
-        const id = e.target.dataset.id;
+        const target = e.target.closest("button, [id='add-new-kiosk']");
+        if (!target) return;
+        const id = target.dataset.id;
 
-        if (e.target.id === 'add-new-kiosk') {
-            createNewKiosk();
+        if (target.id === 'add-new-kiosk') {
+            await createNewKiosk();
             return;
         }
-        if (e.target.classList.contains("edit")) {
+        if (target.classList.contains("edit")) {
             const kiosk = kiosksData.find(k => k.id == id);
             if (kiosk) openKioskModal(kiosk);
             return;
         }
-        if (e.target.classList.contains("block")) {
-            const kiosk = kiosksData.find(k => k.id  == id);
+        if (target.classList.contains("block")) {
+            const kiosk = kiosksData.find(k => k.id == id);
+            if (!kiosk) return;
             const currentStatus = kiosk.status;
             await toggleBlock(id, currentStatus);
+            return;
         }
-        if (e.target.classList.contains("delete")) {
+        if (target.classList.contains("delete")) {
             if (confirm("Hapus kios ini?")) {
-                deleteKiosk(id);
+                await deleteKiosk(id);
             }
         }
     });
@@ -83,18 +87,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     userTable.addEventListener("click", e => {
         const row = e.target.closest("tr");
         if (!row) return;
-        const id = e.target.dataset.id;
+        const target = e.target.closest("button, [id='add-new-user']");
+        if (!target) return;
+        const id = target.dataset.id;
 
-        if (e.target.id === 'add-new-user') {
+        if (target.id === 'add-new-user') {
             openUserModal();
             return;
         }
-        if (e.target.classList.contains("edit")) {
+        if (target.classList.contains("edit")) {
             const user = usersData.find(u => u.id == id);
             if (user) openUserModal(user);
             return;
         }
-        if (e.target.classList.contains("delete")) {
+        if (target.classList.contains("delete")) {
             if (confirm("Hapus pengguna ini?")) {
                 deleteUser(id);
             }
@@ -468,13 +474,22 @@ async function createNewKiosk() {
 async function toggleBlock(kioskId, currentStatus) {
     if (currentStatus === "unregistered") return;
     const newStatus = currentStatus === "active" ? "blocked" : "active";
-    await apiFetch(`/api/admin/kiosks/${kioskId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus })
-    })
-    showToast("Berhasil mengubah status KIOS-K", "success");
-    loadKiosks();
+    try {
+        const res = await apiFetch(`/api/admin/kiosks/${kioskId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: newStatus })
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || res.statusText);
+        }
+        showToast("Berhasil mengubah status KIOS-K", "success");
+        await loadKiosks();
+    } catch (err) {
+        console.error("Failed to toggle kiosk status", err);
+        showToast("Gagal mengubah status KIOS-K", "error");
+    }
 };
 
 //for closing window
