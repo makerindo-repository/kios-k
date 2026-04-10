@@ -49,7 +49,7 @@ html, body {
   background: #28a745;
 }
 .error {
-  background: #dc3545;
+  background: #7a1010;
 }
 
 /*Stats*/
@@ -57,7 +57,7 @@ html, body {
     color: #107a23;
 }
 #stat-blocked {
-    color: #7a1010;
+    color: #dc3543;
 }
 
 /*Tables*/
@@ -193,7 +193,7 @@ html, body {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: #7a1010;
+    background: #dc3543;
     color: #f7f7f7;
     border: none;
     border-radius: 50%;

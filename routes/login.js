@@ -19,13 +19,13 @@ router.post("/login", async (req, res) => {
         );
         //Check if user exists or nah
         if (rows.length === 0) {
-            return res.status(401).json({ error: "Gagal login: Data invalid" });
+            return res.status(401).json({ error: "Username / email ini tidak terdaftar" });
         }
         const user = rows[0];
         //check if the password is right id user does exists
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-            return res.status(401).json({ error: "Gagal login: Data invalid" });
+            return res.status(401).json({ error: "Password tidak valid" });
         };
         //generate the ohio impressed token
         const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: "12h" });

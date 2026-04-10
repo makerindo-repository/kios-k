@@ -59,7 +59,7 @@ html, body {
   background: #28a745;
 }
 .error {
-  background: #dc3545;
+  background: #7a1010;
 }
 
 
@@ -248,7 +248,7 @@ html, body {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: #7a1010;
+    background: #dc3543;
     color: white;
     border: none;
     border-radius: 50%;

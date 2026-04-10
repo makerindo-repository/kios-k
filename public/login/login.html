@@ -15,13 +15,14 @@
             <form id="login-form">
                 <div class="field-with-icon">
                     <i class="fi fi-rr-envelope"></i>
-                    <input type="text" name="useremail" placeholder="Masukkan Username / Email Disini" required>
+                    <input type="text" name="useremail" id="useremail" placeholder="Masukkan Username / Email Disini">
                 </div>
                 <div class="field-with-icon">
                     <i class="fi fi-rr-key"></i>
-                    <input type="password" name="password" placeholder="Masukkan Password Disini" required>
+                    <input type="password" name="password" id="password" placeholder="Masukkan Password Disini">
                 </div>
                 <button type="submit" class="button">Login</button>
+                <div id="form-error" class="form-error"></div>
             </form>
         </div>
         <div id="selection" class="selection card hidden">

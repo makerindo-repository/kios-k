@@ -107,7 +107,6 @@ async function loadPages() {
     }
     const res = await apiFetch(`/api/owner/kiosk/${kioskId}/contents`);
     const pages = await res.json();
-    console.log("Pages response:", pages, "Type:", Array.isArray(pages));
     if (!Array.isArray(pages)) {
         console.error("Pages is not an array:", pages);
         return;
@@ -190,9 +189,7 @@ async function loadLogos() {
         return;
     }
     const res = await apiFetch(`/api/owner/kiosk/${kioskId}/mous`);
-    console.log(res.status, res.ok);
     const logos = await res.json();
-    console.log("Logos response:", logos, "Type:", Array.isArray(logos));
     if (!Array.isArray(logos)) {
         console.error("Logos is not an array:", logos);
         return;
@@ -236,9 +233,7 @@ async function loadDecos() {
         return;
     }
     const res = await apiFetch(`/api/owner/kiosk/${kioskId}/decorations`);
-    console.log(res.status, res.ok);
     const decos = await res.json();
-    console.log("Decos response: ", decos, "Type: ", Array.isArray(decos));
     if (!Array.isArray(decos)) {
         console.error("Decos is not an array: ", decos);
         return;
@@ -305,7 +300,7 @@ async function deletePage(id, cardElement) {
         const res = await apiFetch(`/api/owner/kiosk/${kioskId}/contents/${id}`, { method: "DELETE" });
         if (!res.ok) {
             const err = await res.json();
-            console.log("Error dalam menghapus halaman: " + err.error);
+            console.error("Error in deleting " + err.error);
             showToast("Tidak bisa menghapus halaman", "error");
             return;
         }
@@ -335,7 +330,7 @@ async function deleteMou(id, cardElement) {
         const res = await apiFetch(`/api/owner/kiosk/${kioskId}/mous/${id}`, { method: "DELETE" });
         if (!res.ok) {
             const err = await res.json();
-            console.log("Gagal menghapus MoU: " + err.error)
+            console.error("Error in deleting " + err.error)
             showToast("Gagal menghapus MoU", "error");
             return;
         }
@@ -444,6 +439,17 @@ decoForm.addEventListener("submit", async e => {
         console.error(error);
         showToast("Gagal mengubah dekorasi", "error");
     }
+});
+document.querySelectorAll(".file-input").forEach(input => {
+    input.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const maxSize = 2 * 1024 * 1024; // 2MB
+        if (file.size > maxSize) {
+            showToast("File terlalu besar (max 2MB)", "error");
+            e.target.value = "";
+        }
+    });
 });
 document.querySelectorAll(".cancel-btn").forEach(btn => {
     btn.addEventListener("click", e => {

@@ -35,22 +35,19 @@ router.put("/regist", async (req, res) => {
         if (reg_ids.length === 0) {
             return res.status(401).json({ error: "Gagal registrasi: Data invalid" });
         }
-        console.log("Reg code exists");
         
         //2. verify user exists and password matches
         const [users] = await pool.query("SELECT id, password FROM users WHERE email = ?", [email]);
         if (users.length === 0) {
             return res.status(401).json({ error: "Gagal registrasi: Data invalid" });
         }
-        console.log("User exists");
         const user = users[0];
         const userId = users[0].id;
-        console.log(userId);
         const userMatch = await bcrypt.compare(password, user.password);
         if (!userMatch) {
             return res.status(401).json({ error: "Gagal registrasi: Data invalid" });
         }
-        console.log("User's password is correct");
+
 
         //3. verify kiosk is not already activated
         const [kiosks]  = await pool.query("SELECT status FROM kiosks WHERE regist_id = ?", [regist_id]);
@@ -61,13 +58,11 @@ router.put("/regist", async (req, res) => {
         if (kiosk.status !== "unregistered") {
             return res.status(401).json({ error: "Batal registrasi: Kiosk sudah diregistrasikan" });
         }
-        console.log("Kiosk is not active yet, activating...");
 
         //4. count the warranty
         const now = new Date();
         const warrantyEnd = new Date();
         warrantyEnd.setFullYear(now.getFullYear() + 1);
-        console.log("Warranty set");
 
         //5. update kiosk status and set the kiosk name from the submitted input
         const {latitude, longitude} = req.body;
@@ -77,9 +72,10 @@ router.put("/regist", async (req, res) => {
             WHERE regist_id = ?`,
             [userId, name, 'active', latitude, longitude, warrantyEnd.toISOString().slice(0, 19).replace('T', ' '), regist_id]
         );
-        return res.status(200).json({ message: "Kiosk berhasil diregistrasikan" });
+        return res.status(200).json({ message: "KIOS-K berhasil diaktifkan" });
     } catch(error) {
         res.status(500).json({ error: error.message });
+        console.error("Failed in activating")
     }
 });
 //this one is for registering kiosk, technically it is an edit since if true, user just change the state

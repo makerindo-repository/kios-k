@@ -58,7 +58,6 @@ router.post("/kiosks", async (req, res) => {
                 JSON.stringify([])
             ]
         );
-        console.log("C3")
         await conn.query(`
             INSERT INTO decorations
             (kiosk_id, color_palette, page_interval, mou_option, kiosk_logo, text_content)
@@ -72,14 +71,11 @@ router.post("/kiosks", async (req, res) => {
                 ""
             ]
         );
-        console.log("C4")
         await conn.commit();
         res.status(201).json({ id: kioskId });
     } catch (error) {
         await conn.rollback();
-        //res.status(500).json({ error: error.message });
-        console.log("Kena ini");
-        console.log(error.message);
+        res.status(500).json({ error: error.message });
     } finally {
         conn.release();
     }
@@ -183,7 +179,6 @@ router.put("/users/:id", async (req, res) => {
             return res.status(400).json({ error: "No fields to update" });
         }
         values.push(id);
-        console.log(values);
         await pool.query(`UPDATE users SET ${fields.join(", ")} WHERE id = ?`, values);
         res.json({ success: true });
     } catch(error) {

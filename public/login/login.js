@@ -2,6 +2,19 @@
 //handles submission of the login form and navigates to the owner UI
 const form = document.getElementById("login-form");
 
+//For the error stuff and warning
+function setFormError(message) {
+    const errorDiv = document.getElementById("form-error");
+    errorDiv.textContent = message;
+}
+function setInputError(input) {
+    input.classList.add("input-error");
+}
+function clearInputErrors() {
+    document.querySelectorAll(".input-error")
+        .forEach(el => el.classList.remove("input-error"));
+}
+
 function showKiosks(kiosks) {
     const container = document.getElementById("selection");
     container.innerHTML = "<h2>Pilih KIOS-K</h2>";
@@ -19,8 +32,19 @@ function showKiosks(kiosks) {
 
 form.addEventListener("submit", async e => {
     e.preventDefault();
+    setFormError("")
+    clearInputErrors();
     const data = new FormData(form);
     const body = Object.fromEntries(data.entries());
+
+    if (!body.useremail.trim()) {
+        setInputError(useremail);
+        return setFormError("Tolong isi bagian username / email");
+    }
+    if (!body.password) {
+        setInputError(password);
+        return setFormError("Tolong isi bagian password");
+    }
 
     try {
         const res = await fetch("/api/login", {
@@ -31,26 +55,23 @@ form.addEventListener("submit", async e => {
 
         // First check status
         if (!res.ok) {
-            // try parsing error JSON if any
             let errorMsg = "Gagal masuk";
             try {
                 const err = await res.json();
                 errorMsg = err.error || errorMsg;
             } catch (_) {}
-            alert(errorMsg);
-            return;
+            console.error(errorMsg);
+            return setFormError(errorMsg || "Terjadi kesalahan")
         }
 
         // Now parse successful JSON
         const result = await res.json();
-
         if (result.role === "superadmin") {
             localStorage.setItem('token', result.token);
             localStorage.setItem('role', result.role);
             location.href = "/admin";
             return;
         }
-
         const kiosks = result.kiosks || [];
         if (kiosks.length === 0) {
             alert("Anda belum memiliki kios!");
@@ -62,11 +83,10 @@ form.addEventListener("submit", async e => {
             localStorage.setItem('token', result.token);
             localStorage.setItem('role', result.role);
         }
-
         showKiosks(kiosks);
 
     } catch (error) {
         console.error("login error", error);
-        alert("Gagal terhubung ke server");
+        setFormError("Server error");
     }
 });

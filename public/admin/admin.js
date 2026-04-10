@@ -12,9 +12,6 @@ let ownersData = []; // cache owner list for kiosk editing
 
 //check auth
 const token = localStorage.getItem("token");
-console.log(token);
-console.log(localStorage.getItem("role"));
-
 // Helper to add token to fetch requests
 function apiFetch(url, options = {}) {
     const token = localStorage.getItem("token");
@@ -53,7 +50,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadKioskStats();
     await loadUserStats();
     ownersData = usersData.filter(u => u.role === 'owner');
-    console.log("Your owners data are: ", ownersData);
     await loadKioskMap();
 
     // attach delegation listener to kiosk table (fires even after reload)
@@ -369,7 +365,6 @@ async function loadKioskMap() {
         if (!res.ok) throw new Error("Failed to fetch kiosks");
 
         const kiosks = await res.json();
-        console.log(kiosks);
 
         const map = L.map("map").setView([0, 0], 2);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -393,7 +388,7 @@ async function loadKioskMap() {
                 .bindPopup(`<b>${kiosk.name}</b><br>Owner: ${kiosk.owner || "N/A"}<br>Status: ${kiosk.status}`);
             
             bounds.push([lat, lng]);
-            console.log(`Added marker for ${kiosk.name} at [${lat}, ${lng}]`);
+            console.info(`Added marker for ${kiosk.name} at [${lat}, ${lng}]`);
         });
 
         if (bounds.length > 0) {
@@ -442,7 +437,6 @@ async function deleteUser(id) {
     }
 };
 async function deleteKiosk(id) {
-    console.log(id);
     try {
         const res = await apiFetch(`/api/admin/kiosks/${id}`, { method: "DELETE" });
         if (!res.ok) throw new Error(`status ${res.status}`);

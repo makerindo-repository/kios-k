@@ -44,7 +44,7 @@
                 </div>
                 <h2>Dekorasi Opsional</h2>
                 <div class="mini-fields">
-                    <label>Logo Usaha: <input type="file" name="kl"></label>
+                    <label>Logo Usaha: <input type="file" name="kl" id="kl" class="file-input"><small class="hint">Maks. ukuran: 2MB</small></label>
                     <label>Isi Teks / Tulisan: <input type="text" name="tc" placeholder="Maks. 30 karakter"></label>
                 </div>
                 <button type="submit" class="submit-btn">Ubah Tampilan Display KIOS-K</button>
@@ -65,7 +65,7 @@
                         <option value="single">Satu Foto</option>
                         <option value="multi">Banyak Foto</option>
                     </select></label>
-                    <label>Foto <br><input type="file" name="photos" accept="image/*" multiple></label>
+                    <label>Foto <br><input type="file" name="photos" accept="image/*" class="file-input" multiple><small class="hint">Maks. ukuran: 2MB</small></label>
                     <input type="hidden" name="id">
                     <button type="submit" class="submit-btn">Tambah / Edit Halaman</button>
                 </form>
@@ -74,11 +74,11 @@
         <div id="welcome-modal" class="modal hidden">
             <div class="modal-content">
                 <button type="button" id="cancel-add" class="cancel-btn button alert"><b>X</b></button>
-                <h2>Form Halaman</h2>
+                <h2>Form Halaman Selamat Datang</h2>
                 <form id="welcome-form">
                     <label>Kalimat: <br><input type="text" name="heading"></label>
                     <label>Deskripsi: <br><textarea name="description"></textarea></label>
-                    <label>Foto <br><input type="file" name="photos" accept="image/*" multiple></label>
+                    <label>Foto <br><input type="file" name="photos" accept="image/*" class="file-input" multiple><small class="hint">Maks. ukuran: 2MB</small></label>
                     <input type="hidden" name="id">
                     <button type="submit" class="submit-btn">Edit Halaman Selamat Datang</button>
                 </form>

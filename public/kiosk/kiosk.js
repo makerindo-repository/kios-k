@@ -68,7 +68,7 @@ function startWebSocket(kioskId) {
   const scheme = location.protocol === "https:" ? "wss" : "ws";
   const ws = new WebSocket(`${scheme}://${location.host}`);
   ws.onopen = () => {
-    console.log("[WS] connected");
+    console.info("[WS] connected");
   };
   ws.onerror = (err) => {
     console.error("[WS] error", err);
@@ -82,7 +82,7 @@ function startWebSocket(kioskId) {
       return;
     }
     if (msg.type === "refresh" && msg.kiosk == kioskId) {
-      console.log("[WS] refresh received for kiosk", kioskId);
+      console.info("[WS] refresh received for kiosk", kioskId);
 
       loadContents();
       loadMoUs();
@@ -91,7 +91,7 @@ function startWebSocket(kioskId) {
   };
 
   ws.onclose = () => {
-    console.log("[WS] disconnected, retrying...");
+    console.info("[WS] disconnected, retrying...");
     setTimeout(() => startWebSocket(kioskId), 3000); // auto reconnect
   };
 }
@@ -136,7 +136,6 @@ function applyDecorations(deco) {
   if (deco.kiosk_logo) {
     const logoContainer = document.querySelector(".logo");
     logoContainer.innerHTML = `<img src="/uploads/${deco.kiosk_logo}" alt="Logo">`;
-    console.log("Tunjukkan: ", deco.kiosk_logo);
   }
   if (deco.text_content) {
     const message = document.getElementById("slogan");
@@ -178,14 +177,12 @@ async function loadContents() {
   }
 
   try {
-    console.log("[kiosk] loading contents for kioskId=", kioskId);
     const res = await apiFetch(`/api/kiosk/${kioskId}/contents`);
     if (!res.ok) {
       console.error("Failed to load contents", res.status);
       return;
     }
     const pages = await res.json();
-    console.log("[kiosk] pages returned:", pages);
     pageData = Array.isArray(pages) ? pages : [];
     if (!pageData.length) {
       container.innerHTML = `
@@ -284,7 +281,6 @@ function renderMultiPage(page) {
       <div class="description"><p>${page.description || page.desc || ""}</p></div>
     </section>
   `;
-  console.log(pageIntervalMs / (photos.length));
   startCarousel(pageIntervalMs / (photos.length));
 }
 function renderWelcomePage(page) {
@@ -320,7 +316,6 @@ async function loadMoUs() {
   try {
     const res = await apiFetch(`/api/owner/kiosk/${kioskId}/mous`);
     const moUs = await res.json();
-    console.log(moUs);
 
     // Clear both sets
     const mouSets = document.querySelectorAll(".mou-set");

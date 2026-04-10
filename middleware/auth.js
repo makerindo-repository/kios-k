@@ -11,7 +11,6 @@ function authenticate(req, res, next) {
 
     try {
         const payload = jwt.verify(token, JWT_SECRET);
-        console.log(payload, req.originalUrl);
         req.user = payload;
         next();
     } catch(error) {
