@@ -82,7 +82,7 @@ router.post("/kiosks", async (req, res) => {
 });
 router.put("/kiosks/:id", async (req, res) => {
     const kioskId = req.params.id;
-    const { name } = req.body;
+    const { name, status } = req.body;
 
     try {
         const fields = [];
@@ -91,6 +91,11 @@ router.put("/kiosks/:id", async (req, res) => {
         if (name !== undefined) {
             fields.push("name = ?");
             values.push(name);
+        }
+
+        if (status !== undefined) {
+            fields.push("status = ?");
+            values.push(status);
         }
 
         if (fields.length === 0) {

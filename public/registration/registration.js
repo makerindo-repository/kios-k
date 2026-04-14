@@ -61,7 +61,7 @@ document.getElementById("save-map").onclick = () => {
     document.getElementById("longitude").value = lng;
     mapModal.classList.add("hidden");
 }
-
+//map initialization
 function initMap() {
     if (map) return;
     map = L.map('map').setView([-6.9500928, 107.6232192], 10);
@@ -73,48 +73,117 @@ function initMap() {
         marker = L.marker([lat, lng], { draggable: true }).addTo(map);
     })
 }
-const handleSubmit = async (form) => {
-    form.addEventListener("submit", async e => {
-        e.preventDefault();
-        const data = new FormData(form);
-        const body = Object.fromEntries(data.entries());
-        const method = form === kioskForm ? "PUT" : "POST";
 
-        if (!body.latitude || !body.longitude) {
-            document.getElementById("form-error").classList.remove("hidden")
-            mapModal.classList.remove("hidden");
-            setTimeout(() => {
-                if (!map) initMap();
-                else map.invalidateSize();
-            }, 100);
-            return setFormError("Tolong masukkan lokasi KIOS-K menggunakan peta di bawah");
-        }
+//registrations
+async function apiRegister(body, method) {
+    const res = await fetch("/api/regist", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+    const text = await res.text();
+    let data;
+    
+    try {
+        data = JSON.parse(text);
+    } catch {
+        data = { error: text };
+    }
+    return { res, data };
+}
+async function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const body = Object.fromEntries(new FormData(form).entries());
+    const method = form === kioskForm ? "PUT" : "POST";
 
-        try {
-            const res = await fetch("/api/regist", {
-                method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body)
-            });
+    try {
+        const { res, data } = await apiRegister(body, method);
 
-            if (!res.ok) {
-                let errorMsg = "Gagal mendaftar";
-                try {
-                    const err = await res.json();
-                    errorMsg = err.error || errorMsg;
-                } catch (_) {}
-                showToast("Gagal mendaftar", "error");
+        //USER FLOW ONLY
+        if (form === userForm) {
+            if (res.status === 400) {
+                showToast("Data tidak lengkap", "error");
                 return;
             }
-            alert("Berhasil terdaftar! Selamat menggunakan KIOS-K!")
-            form.reset();
-            window.location.href = "/";
-        } catch (error) {
-            console.error("regist error", error);
-            showToast("Server error", "error")
+            if (res.status === 409) {
+                if (data.code === "EMAIL_EXISTS") {
+                    showToast("Email sudah terdaftar", "error");
+                    return;
+                }
+                if (data.code === "PHONE_EXISTS") {
+                    showToast("Nomor telepon sudah terdaftar", "error");
+                    return;
+                }
+                showToast("Konflik data", "error");
+                return;
+            }
+            if (!res.ok) {
+                showToast("Server error", "error");
+                return;
+            }
+            alert("Berhasil terdaftar!");
         }
-    });
-};
 
-if (userForm) handleSubmit(userForm);
-if (kioskForm) handleSubmit(kioskForm);
+        // KIOSK FLOW
+        if (form === kioskForm) {
+            if (res.status === 400) {
+                if (data.code === "MISSING_REGIST_ID") {
+                    showToast("Kode registrasi dibutuhkan", "error");
+                    return;
+                }
+                if (data.code === "MISSING_NAME") {
+                    showToast("Nama KIOS-K tidak boleh kosong", "error");
+                    return;
+                }
+                if (data.code === "MISSING_EMAIL") {
+                    showToast("Email dibutuhkan", "error");
+                    return;
+                }
+                if (data.code === "MISSING_PASSWORD") {
+                    showToast("Password dibutuhkan", "error");
+                    return;
+                }
+                if (data.code === "MISSING_LOCATION") {
+                    showToast("Lokasi harus ditentukan", "error");
+                    return;
+                }
+            }
+
+            if (res.status === 404) {
+                showToast("KIOS-K dengan kode tersebut tidak ada", "error");
+                return;
+            }
+
+            if (res.status === 401) {
+                if (data.code === "EMAIL_NOT_FOUND") {
+                    showToast("Email anda tidak terdaftar", "error");
+                    return;
+                }
+                if (data.code === "INVALID_PASSWORD") {
+                    showToast("Password invalid", "error");
+                }
+            }
+            if (res.status === 409) {
+                showToast("KIOS-K ini sudah aktif", "error");
+                return;
+            }
+            if (!res.ok) {
+                console.error(error)
+                showToast("Server error", "error");
+                return;
+            }
+            alert("Berhasil mengaktifkan KIOS-K");
+        }
+
+        form.reset();
+        window.location.href = "/";
+
+    } catch (error) {
+        console.error("regist error", error);
+        showToast("Server error", "error");
+    }
+}
+
+if (userForm) userForm.addEventListener("submit", handleSubmit);
+if (kioskForm) kioskForm.addEventListener("submit", handleSubmit);
